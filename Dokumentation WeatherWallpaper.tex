@@ -16,6 +16,12 @@
 \usepackage{hyperref}
 \usepackage[left=2.5cm,right=2.5cm,top=2cm,bottom=3.5cm]{geometry}
 \usepackage{csquotes}
+\usepackage{chngcntr}	% Damit Listings Listing 1.1 etc heißen
+\usepackage{minted}
+\renewcommand\listoflistingscaption{Listings}
+
+\counterwithin{listing}{section} % Korrektes Counting
+
 \title{WeatherWallpaper\vspace{20px}}
 \author{Janis Fix, Leon Gieringer \\ \\ TINF18B3 \\ \\ \\ Advanced Software Engineering \\ \\ \\ \\}
 \date{\today}
@@ -27,6 +33,8 @@
 	
 	\pagenumbering{Roman}
 	\tableofcontents
+	\newpage
+	\listoflistings
 	\newpage
 	
 	%\listoffigures
@@ -48,23 +56,21 @@
 	
 	\section{Clean Architecture}
 	\input{clean_architecture}
+	\newpage
 	\section{Entwurfsmuster}
 	\input{entwurfsmuster}
+	\newpage
 	\section{Programming Principles}
 	\input{programming_principles}
+	\newpage
 	\section{Refactoring}
 	\input{refactoring}
+	\newpage
 	\section{Unit Tests}
 	\input{unit_tests}
 	
 	
 	
-
-	\newpage
-	\section*{Literaturverzeichnis}
-	\begin{itemize}
-		\bibitem[1]{foobar2021} Foo (2021). bar.
-	\end{itemize}
 	
 \end{document}
 
