@@ -1,4 +1,3 @@
-% TODO
 \subsection{SOLID}
 \subsubsection{Single Responsibility Principle}
 
@@ -12,4 +11,58 @@ Das Liskov Substitution Principle ist erfüllt, da abgesehen von den verwendeten
 
 \subsection{GRASP}
 
+%TODO
+%\begin{itemize}
+%	\item Low Coupling % geringe Koppelung zwischen den Klassen
+%	\item High Cohesion % hoher Zusammenhalt innerhalb einer Klasse --> Prävention für SoC
+%	\item Indirection % "andere arbeiten lassen" also Delegation
+%	\item Polymorphism % Wo Funktionen geschrieben werden --> bei Änderungen in den Sub-Typen, ohne Änderung in der Oberklasse
+%	\item Pure Fabrication % Trennung von Technologiewissen und Domänenwissen --> Auslagern einer Klasse als "Service" (in ddd), damit low coupling und high cohesion (und potentielle wiederverwendung) gegeben sind
+%	\item Protected Variations % Schutz von Elementen vor Variation anderer Elemente --> "verstecken hinter gleicher Schnittstelle"
+%\end{itemize}
+
+\subsubsection{Low Coupling}
+\begin{itemize}
+	\item \texttt{ImageHandler}		
+	\item \texttt{WeatherHandler}	%  weniger Abhängigkeit --> einzige Koppelung bspw. "GetImageData", alle anderen Verbindungen eliminiert
+\end{itemize}
+
+\subsubsection{High Cohesion}
+\begin{itemize}
+	\item \texttt{ImageHandler}		% GetQueryStringFromAttributes wird eigentlich nur von außen genutzt
+	\item \texttt{WeatherHandler}	% BuildRouteString wird eigentlich nur von außen genutzt 			--> beide sollten innerhalb der Klasse ausgeführt werden
+\end{itemize}
+
+\subsubsection{Indirection}
+\begin{itemize}
+	\item \texttt{Refresher}		% machen wir das hier nicht ausschließlich?
+\end{itemize}
+
+\subsubsection{Polymorphism}
+% Haben wir das überhaupt, wenn wir keine Vererbung außer Interfaces haben?
+
+\subsubsection{Pure Fabrication}
+\begin{itemize}
+	\item \texttt{ConfigValidator} ist Pure fabrication und einzelne \texttt{IValidationAspect}s sind domain Code 
+	\item \texttt{StartUpHelper} 		% Reine Dienstklasse
+	\begin{itemize}
+		\item \texttt{ImageHandler}
+		\item \texttt{WeatherHandler} 	% Kein wirklicher Code von der Problemdomäne
+		\item \texttt{ConfigHandler} 	% current config als "state" --> gehört er also wirklich rein? .. SRP?
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{Protected Variations}
+% ist das nicht immer wenn man aus einer "inneren" Schicht in einer "äußere" eine Abhängig hat
+\begin{itemize}
+	\item \texttt{IBackgroundChanger} Das Wechseln des Hintergrundbildes funktioniert auf verschiedenen Betriebssystemen (verschiedener Windowsversionen) unterschiedlich. Um dieser Änderungen standzuhalten bietet das Interface eine einheitliche Schnittstelle
+	\item \texttt{IImageWriter} Selbes
+	\item \texttt{IFileAccessor} Selbes
+	\item \texttt{IAPICaller} Bei Änderung der Beschaffungsart der Wetter- bzw. Bild Daten 
+\end{itemize}
 \subsection{DRY}
+\textit{Don't Repeat Yourself} 
+% 
+\subsection{YAGNI}
+% PUT Methode beim APICaller zunächst hinzugefügt, da ursprünglich angedacht war, das Ganze mit Hardware zu verknüpfen
+% Diese wurde jedoch entfernt, da wir uns auf die wirklich relevanten Use Cases konzentriert hatten --> You Aint Gonna Need It

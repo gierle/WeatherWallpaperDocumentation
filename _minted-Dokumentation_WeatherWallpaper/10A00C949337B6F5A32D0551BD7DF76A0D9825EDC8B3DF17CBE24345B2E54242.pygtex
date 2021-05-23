@@ -1,0 +1,33 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{public} \PYG{n+nf}{ConfigValidatorTest}\PYG{p}{()}
+\PYG{p}{\PYGZob{}} 
+    \PYG{c+c1}{// ConfigValidator is needed in every unit test, so we initialize it here}
+    \PYG{n}{\PYGZus{}configValidator} \PYG{p}{=} \PYG{k}{new} \PYG{n}{ConfigValidator}\PYG{p}{();}
+    \PYG{n}{\PYGZus{}configValidator}\PYG{p}{.}\PYG{n}{Register}\PYG{p}{(}\PYG{k}{new} \PYG{n}{IsCorrectCity}\PYG{p}{());}
+    \PYG{n}{\PYGZus{}configValidator}\PYG{p}{.}\PYG{n}{Register}\PYG{p}{(}\PYG{k}{new} \PYG{n}{IsCorrectInterval}\PYG{p}{());}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{n+na}{[Fact]}
+\PYG{k}{public} \PYG{k}{void} \PYG{n+nf}{ValidateInputsFalseCity}\PYG{p}{()}
+\PYG{p}{\PYGZob{}}
+    \PYG{c+c1}{// Arrange}
+    \PYG{k}{const} \PYG{k+kt}{string} \PYG{n}{city} \PYG{p}{=} \PYG{l+s}{\PYGZdq{}F4k3 ci7y\PYGZdq{}}\PYG{p}{;}
+    \PYG{k}{const} \PYG{k+kt}{string} \PYG{n}{country} \PYG{p}{=} \PYG{l+s}{\PYGZdq{}DE\PYGZdq{}}\PYG{p}{;}
+    \PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{interval} \PYG{p}{=} \PYG{l+m}{10}\PYG{p}{;}
+    \PYG{n}{Config} \PYG{n}{conf} \PYG{p}{=} \PYG{k}{new} \PYG{n}{Config}\PYG{p}{()}
+    \PYG{p}{\PYGZob{}}
+        \PYG{n}{Interval} \PYG{p}{=} \PYG{n}{interval}\PYG{p}{,}
+        \PYG{n}{Location} \PYG{p}{=} \PYG{k}{new} \PYG{n}{Location}\PYG{p}{()}
+        \PYG{p}{\PYGZob{}}
+            \PYG{n}{City} \PYG{p}{=} \PYG{n}{city}\PYG{p}{,}
+            \PYG{n}{CountryAbrv} \PYG{p}{=} \PYG{n}{country}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{};}
+    \PYG{k}{const} \PYG{k+kt}{string} \PYG{n}{actualExceptionMessage} 
+        \PYG{p}{=} \PYG{l+s}{\PYGZdq{}Stadtname beinhaltet unbekannte Zeichen.\PYGZdq{}}\PYG{p}{;}
+    \PYG{c+c1}{// Act, Assert}
+    \PYG{k+kt}{var} \PYG{n}{ex} \PYG{p}{=} \PYG{n}{Assert}\PYG{p}{.}\PYG{n}{Throws}\PYG{p}{\PYGZlt{}}\PYG{n}{BadConfigException}\PYG{p}{\PYGZgt{}(}
+        \PYG{p}{()} \PYG{p}{=\PYGZgt{}} \PYG{n}{\PYGZus{}configValidator}\PYG{p}{.}\PYG{n}{ValidateInputs}\PYG{p}{(}\PYG{n}{conf}\PYG{p}{));}
+    \PYG{n}{Assert}\PYG{p}{.}\PYG{n}{Equal}\PYG{p}{(}\PYG{n}{actualExceptionMessage}\PYG{p}{,} \PYG{n}{ex}\PYG{p}{.}\PYG{n}{Message}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
