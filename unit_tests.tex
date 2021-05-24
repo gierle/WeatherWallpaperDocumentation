@@ -1,10 +1,13 @@
 % TODO
-Insgesamt wurden 29 Unit-Test geschrieben. Im Folgenden werden auf Einzelheiten zu den Unit-Tests eingegangen.
+Insgesamt wurden 29 Unit-Test geschrieben. Im Folgenden werden auf Einzelheiten zu den Unit-Tests eingegangen. Als Test-Framework wird das Framework XUnit verwendet.
 \subsection{ATRIP}
 Die entwickelten Unit-Tests befolgen die ATRIP-Regeln.
 Das bedeutet also, dass sie...
 \begin{itemize}
-\item Automatic, also eigenständig ablaufen und ihre Ergebnisse selbst prüfen.
+\item Automatic, also eigenständig ablaufen und ihre Ergebnisse selbst prüfen. Dies wird durch das Testing-Framework XUnit gewährleistet.
+\begin{itemize}
+\item Alle Unit-Tests sind \href{https://github.com/Bronzila/WeatherWallpaper/tree/master/WeatherWallpaperTest}{\color{blue}hier} zu finden.
+\end{itemize}
 \item Thorough, also gründlich (genug) sind und die wichtigsten Funktionalitäten prüfen. Dazu gehört bei unserem Use-Case:
 \begin{itemize}
 \item Die Analyse der Wetterdaten,
@@ -13,10 +16,15 @@ Das bedeutet also, dass sie...
 \item Die Verarbeitung der Daten der APIs, sowie die Fehlerbehandlung der APIs
 \end{itemize}
 \item Repeatable, also jederzeit (automatisch) ausführbar sind. Dabei wird beispielsweise im Falle des WeatherInterpreterTest darauf geachtet, dass der Test nicht von der aktuellen Systemzeit abhängig ist.
-\item Independent, also unabhängig voneinander in beliebiger Reihenfolge ausführbar sind. Kein Test ist auf das Ergebnis oder den Ablauf eines anderen Tests abhängig.
-\item Professional, also einfach verständlich sind.
+\begin{itemize}
+\item Dieser Unit-Test ist \href{https://github.com/Bronzila/WeatherWallpaper/blob/master/WeatherWallpaperTest/WeatherInterpreterTest.cs}{\color{blue}hier} zu finden.
 \end{itemize}
-Hier wahrscheinlich noch Screenshots für die einzelnen Unterpunkte
+\item Independent, also unabhängig voneinander in beliebiger Reihenfolge ausführbar sind. Kein Test ist von dem Ergebnis oder dem Ablauf eines anderen Tests abhängig.
+\item Professional, also einfach lesbar und verständlich sind.
+\begin{itemize}
+\item Ein Beispiels-Unit-Test ist \href{https://github.com/Bronzila/WeatherWallpaper/blob/master/WeatherWallpaperTest/ImageHandlerTest.cs}{\color{blue}hier} zu finden.
+\end{itemize}
+\end{itemize}
 \subsection{Beispiel für Unit-Tests und Mocks}
 Die Unit-Test wurden, sofern möglich, in der AAA-Normalform entwickelt. Bei Unit-Tests, die Exceptions erwarten musste der Act- und Assert-Schritt teilweise zusammengeführt werden. In Listing \ref{ConfValidator} wird einerseits gezeigt, wie der zu testende ConfigValidator im Konstruktor vor jedem Testdurchlauf neu initialisiert wird und die \texttt{ValidationAspects} registriert werden. Im Test selbst wird eine fehlerhafte Konfiguration erzeugt, da im Stadtnamen Zahlen vorhanden sind. Daraufhin wird überprüft, ob die Validierung die richtige \texttt{Exception} wirft und ob die \texttt{ExceptionMessage} richtig ist, also der Fehler korrekt erkannt wurde.
 
@@ -26,7 +34,7 @@ Die Unit-Test wurden, sofern möglich, in der AAA-Normalform entwickelt. Bei Uni
 \label{ConfValidator}
 \end{listing}
 
-Als Beispiel für Mocks betrachten wir in Listing \ref{ImageHandler} ein Test für den \texttt{ImageHandler}. Dabei wird das Interface \texttt{IAPICaller} gemockt und die in Zeile x definierte \texttt{correctApiResponse} beim Aufruf der \texttt{Get}-Methode des API-Callers zurückgegeben. Durch den Einsatz des Mocks, lässt sich die Funktionalität des \texttt{ImageHandlers} testen ohne einen realen API-Caller zu verwenden. Am Schluss wird überprüft, ob das Ergebnis des Aufrufs mit dem erwarteten, eingegebenen Ergebnis übereinstimmt.
+Mock-Objekte werden verwendet um einzelne Klassen isoliert zu testen und damit lediglich die einzelne Unit, also Einheit zu testen. Diese Mock-Objekte ersetzen die eigentlichen Abhängigkeiten der Klasse. Dabei wird ein Mock vorerst eingelernt, um mindestens die notwendige Funktionalität der Abhängigkeit bereitstellen zu können. Ein Beispiel für Mocks wird in Listing \ref{ImageHandler} ein Test für den \texttt{ImageHandler} dargestellt. Dabei wird das Interface \texttt{IAPICaller} gemockt und die in Zeile x definierte \texttt{correctApiResponse} beim Aufruf der \texttt{Get}-Methode des API-Callers zurückgegeben. Durch den Einsatz des Mocks, lässt sich die Funktionalität des \texttt{ImageHandlers} testen ohne einen realen API-Caller zu verwenden. Am Schluss wird überprüft, ob das Ergebnis des Aufrufs mit dem erwarteten, eingegebenen Ergebnis übereinstimmt.
 
 \begin{listing}[h]
 \inputminted[linenos=true,frame=lines]{csharp}{Listings/ImageHandlerTest.cs}
