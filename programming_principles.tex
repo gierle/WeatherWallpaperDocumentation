@@ -10,7 +10,9 @@ Das Liskov Substitution Principle ist erfüllt, da abgesehen von den verwendeten
 \subsubsection{Dependency Inversion Principle}
 
 \subsection{GRASP}
-
+GRASP (General Responsibility Assignment Software Patterns/Principles) sind Standardlösungen für typische Fragestellungen in der Software Entwicklung.
+Diese wurden zum ersten mal von Craig Larman in seinem Buch \enquote{Applying UML and Patterns} aus dem Jahre 1995 vorgestellt.
+Die ersten sechs dieser neun Prinzipien und deren Anwendung in unserem Programm werden im folgenden Verlauf erläutert.
 %TODO
 %\begin{itemize}
 %	\item Low Coupling % geringe Koppelung zwischen den Klassen
@@ -21,38 +23,74 @@ Das Liskov Substitution Principle ist erfüllt, da abgesehen von den verwendeten
 %	\item Protected Variations % Schutz von Elementen vor Variation anderer Elemente --> "verstecken hinter gleicher Schnittstelle"
 %\end{itemize}
 
-\subsubsection{Low Coupling}
+\subsubsection{Low Coupling \& High Cohesion}
+Diese beiden Prinzipien sind essentielle Grundkonzepte bei GRASP.\\
+\textit{Low Coupling} ist ein Maß über die Abhängigkeit einer Komponente zu ihrem Umfeld.
+Das Prinzip ermöglicht vor allem eine höhere Anpassbarkeit der Komponente, ein einfacheres Verständnis über die Funktionsweise dieser und ein leichteres Testen aufgrund geringer Abhängigkeiten zu anderen Komponenten.\\
+\textit{High Cohesion} hingegen gibt Auskunft über den Zusammenhalt innerhalb einer Komponente.
+Es wird also gemessen, wie eng die Methoden und Attribute zusammenarbeiten.
+Dies reduziert hauptsächlich die Komplexität des Gesamtsystems, da Klassen sinnvoll strukturiert werden.
+Beide bedingen sich gegenseitig: Code mit hoher Kohäsion besitzt oft eine geringe Kopplung.\\
+\\
 \begin{itemize}
 	\item \texttt{ImageHandler}		
 	\item \texttt{WeatherHandler}	%  weniger Abhängigkeit --> einzige Koppelung bspw. "GetImageData", alle anderen Verbindungen eliminiert
 \end{itemize}
 
-\subsubsection{High Cohesion}
-\begin{itemize}
-	\item \texttt{ImageHandler}		% GetQueryStringFromAttributes wird eigentlich nur von außen genutzt
-	\item \texttt{WeatherHandler}	% BuildRouteString wird eigentlich nur von außen genutzt 			--> beide sollten innerhalb der Klasse ausgeführt werden
-\end{itemize}
+%\subsubsection{High Cohesion}
+%\begin{itemize}
+	%\item \texttt{ImageHandler}		% GetQueryStringFromAttributes wird eigentlich nur von außen genutzt
+	%\item \texttt{WeatherHandler}	% BuildRouteString wird eigentlich nur von außen genutzt 			--> beide sollten innerhalb der Klasse ausgeführt werden
+%\end{itemize}
 
 \subsubsection{Indirection}
-\begin{itemize}
-	\item \texttt{Refresher}		% machen wir das hier nicht ausschließlich?
-\end{itemize}
+Unter \textit{Indirection} versteht man die zentrale Verwaltung von Aufgaben an einzelne Komponenten, wobei untereinander keine direkte Kopplung besteht.
+Somit ist es ein Prinzip zur Code-Strukturierung und kann zu geringer Kopplung führen.
+
+
+%\begin{itemize}
+%	\item \texttt{Refresher}		% machen wir das hier nicht ausschließlich?
+%\end{itemize}
 
 \subsubsection{Polymorphism}
+Ebenfalls zur Code-Strukturierung trägt das Prinzip des Polymorphismus bei.
+Dadurch kann das Verhalten abhängig vom konkreten Typ jeweils geändert werden; Funktionen erhalten somit eine neue Implementierung.
 % Haben wir das überhaupt, wenn wir keine Vererbung außer Interfaces haben?
 
 \subsubsection{Pure Fabrication}
-\begin{itemize}
-	\item \texttt{ConfigValidator} ist Pure fabrication und einzelne \texttt{IValidationAspect}s sind domain Code 
-	\item \texttt{StartUpHelper} 		% Reine Dienstklasse
-	\begin{itemize}
-		\item \texttt{ImageHandler}
-		\item \texttt{WeatherHandler} 	% Kein wirklicher Code von der Problemdomäne
-		\item \texttt{ConfigHandler} 	% current config als "state" --> gehört er also wirklich rein? .. SRP?
-	\end{itemize}
-\end{itemize}
+Um eine geringe Kopplung und gleichzeitig hohe Kohäsion erreichen zu können, trennt dieses Prinzip die Problemdomäne von der zugrundeliegenden Technologie.
+Es entsteht also eine Klasse ohne jeglichen Bezug zum Problem, sie kann somit also überall wiederverwendet werden - eine reine Service Klasse.
+Daher beschreibt das Prinzip den Aufbau der Architektur im Einklang mit den anderen Prinzipien.\\
+\\
+Die Klasse \texttt{ConfigHandler} ist für die Verwaltung der Konfiguration des Nutzers zuständig.
+Der Zugriff auf das Dateisystem ist über das Interface \texttt{IFileAccessor} ausgelagert.
+Dadurch ist die Problemdomäne durch den \texttt{ConfigHandler} abgedeckt.
+Er löst das Problem der Verwaltung der Konfiguration und delegiert die eigentliche Umsetzung des Speicherns und Ladens an eine andere Komponente.\\
+\\
+Gleichzeitig kümmert sich die Klasse \texttt{ConfigValidator} um das Problem der Validierung einer Konfiguration.
+Hierbei werden verschiedene Validierungsaspekte in Betracht gezogen; jeder Aspekt wird einzeln validiert.
+Die Methode \texttt{ValidateInputs()} befindet sich somit in der Problemdomäne und gibt an, ob alle Eingaben valide sind.
+Einzelne Aspekte werden über Implementierungen des Interfaces \texttt{IValidationAspect} auf Technologie-Ebene untersucht. Dies ist in Abbildung \ref{lst:ConfigValidator} dargestellt.
+
+\begin{listing}[tbt]
+	\inputminted[linenos=true,frame=lines]{csharp}{Listings/ConfigValidator.cs}
+	\caption{ConfigValidator als Problemdomäne und IsCorrectCity als Technologiewissen}
+	\label{lst:ConfigValidator}
+\end{listing}
+
+%\begin{itemize}
+	%\item \texttt{ConfigValidator} ist Pure fabrication und einzelne %\texttt{IValidationAspect}s sind domain Code 
+%	\item \texttt{StartUpHelper} 		% Reine Dienstklasse
+%	\begin{itemize}
+%		\item \texttt{ImageHandler}
+%		\item \texttt{WeatherHandler} 	% Kein wirklicher Code von der Problemdomäne
+%		\item \texttt{ConfigHandler} 	% current config als "state" --> gehört er also wirklich rein? .. SRP?
+%	\end{itemize}
+%\end{itemize}
 
 \subsubsection{Protected Variations}
+Um Elemente bei der Kopplung mit variierenden Implementierungen zu schützen, soll laut diesem Prinzip über eine gemeinsame Schnittstelle zugegriffen werden.
+Somit können Veränderungen eines Elementes keinen (unerwünschten) Einfluss auf andere Elemente haben.
 % ist das nicht immer wenn man aus einer "inneren" Schicht in einer "äußere" eine Abhängig hat
 \begin{itemize}
 	\item \texttt{IBackgroundChanger} Das Wechseln des Hintergrundbildes funktioniert auf verschiedenen Betriebssystemen (verschiedener Windowsversionen) unterschiedlich. Um dieser Änderungen standzuhalten bietet das Interface eine einheitliche Schnittstelle
