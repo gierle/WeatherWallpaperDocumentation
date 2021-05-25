@@ -21,9 +21,26 @@ Um diese verschiedenen Responsibilities in neue Klassen aufzuteilen wurden vier 
 
 Dann noch ConfigHandler bzw Adapter und Zustand
 \subsubsection{Open/Closed Principle}
+Das Open/Closed Principle beschreibt, dass Softwäre-Entitäten offen für Erweiterung aber geschlossen bezüglich Veränderung sein sollen. Dementsprechend soll bestehender Code nicht mehr geändert werden. Bei neuen bzw. geänderten Anforderungen wird der bestehende Code also nicht angepasst/geändert, sondern lediglich erweitert.
 
+Bei unserer Anwendung identifiziert man eine mögliche Entwicklung mit Erweiterung klar bei der Validierung der Konfiguration, hier wird also das OCP verletzt. Gerade wenn sich diese in der Zukunft nochmals anpassen sollte, weil bspw. noch weitere Präferenzen des Nutzers/der Nutzerin erfasst werden sollen.
+\begin{listing}[h]
+\inputminted[linenos=true,frame=lines]{csharp}{Listings/ValidateInputsPre.cs}
+\caption{Verletzung des Open/Closed-Principle im ConfigValidator}
+\label{ConfigValidatorPre}
+\end{listing}
+In Listing \ref{ConfigValidatorPre} ist erkennbar, dass der Code zum Überprüfen angepasst werden müsste, falls eine neue Anforderung an die Konfiguration hinzugefügt wird. Daher wird der bisherige \texttt{ConfigValidator} umgeschrieben und hält nun eine \texttt{List<IValidationAspect>}. In dieser Liste sind alle Validierungs-Aspekte gespeichert gegen die die Eingabe getestet werden soll. Das Interface \texttt{IValidationAspect} definiert eine Methode \texttt{Validate(Config)}, welche validiert, ob die Regel eingehalten wurde. Sollte dies nicht der Fall sein, wird eine Exception geworfen. Nun muss im \texttt{ConfigValidator} lediglich über alle registrierten \texttt{IValidationAspects} iteriert werden und mit der übergebenen Config die \texttt{Validate}-Methode aufgerufen werden. Das Hinzufügen einer neuen Anforderung ist nun simpel über das Schreiben einer neuen Klasse möglich. Diese muss \texttt{IValidationAspect} implementieren und auf den \texttt{ConfigHandler} registriert werden. Der neue \texttt{ConfigValidator} und ein Beispiel für einen \texttt{IValidationAspect} ist in Listing \ref{ConfigValidatorPost} zu sehen. Hierbei ist zu beachten, dass bei negativem Testergebnis eine Exception geworfen (und kein false zurückgegeben) wird, um die genaue Fehlerursache dem Nutzer/der Nutzerin mitzuteilen. Wird keine Exception geworfen, ist mit der Konfiguration alles in Ordnung.
+
+\begin{listing}[h]
+\inputminted[linenos=true,frame=lines]{csharp}{Listings/ValidateInputsPost.cs}
+\caption{Entwicklung mit Erweiterung für den ConfigValidator}
+\label{ConfigValidatorPost}
+\end{listing}
+
+Ein Punkt an dem das OCP nicht erfüllt ist, ist der \texttt{WeatherInterpreter}. Sollten in Zukunft weitere Daten zur Interpretation des Wetters dazu kommen, so müsste der Code des \texttt{WeatherInterpreters} angepasst und verändert werden.
 \subsubsection{Liskov Substitution Principle}
-Das Liskov Substitution Principle ist erfüllt, da abgesehen von den verwendeten Interfaces keine Vererbung verwendet wird.
+Das Liskov Substitution Principle sagt aus, dass Subtypen sich so wie ihr Basistyp verhalten müssen. Subtypen dürfen daher lediglich die Funktionalität ihres Basistyps erweitern, aber nicht einschränken.
+Das Liskov Substitution Principle ist in unserer Anwendung erfüllt, da abgesehen von den verwendeten Interfaces keine Vererbung verwendet wird.
 \subsubsection{Interface Segregation Principle}
 
 \subsubsection{Dependency Inversion Principle}
