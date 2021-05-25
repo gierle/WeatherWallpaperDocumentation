@@ -42,7 +42,9 @@ Ein Punkt an dem das OCP nicht erfüllt ist, ist der \texttt{WeatherInterpreter}
 Das Liskov Substitution Principle sagt aus, dass Subtypen sich so wie ihr Basistyp verhalten müssen. Subtypen dürfen daher lediglich die Funktionalität ihres Basistyps erweitern, aber nicht einschränken.
 Das Liskov Substitution Principle ist in unserer Anwendung erfüllt, da abgesehen von den verwendeten Interfaces keine Vererbung verwendet wird.
 \subsubsection{Interface Segregation Principle}
-
+Das Interface Segregation Principle sagt aus, dass Interfaces passgenau für die aufrufenden Clients sein muss. Das Interface darf also keine Details beinhalten, die der Client gar nicht benötigt.
+Die Interfaces unserer Anwendung folgen diesem Prinzip. Anhand des Interfaces \texttt{IFileAccessor} kann man die Entwicklung hin zum Erfüllen des Prinzips gut nachvollziehen, da das Interface \texttt{IFileAccessor} von zwei Klienten verwendet wird. Dabei benötigt einerseits der \texttt{ConfigHandler} den Zugriff auf Dateien (Lesen und Schreiben) und andererseits der \texttt{DownloadHelper} um das Hintergrundbild zu speichern. Das Interface \texttt{IFileAccessor} umfasst daher sowohl das Lesen/Schreiben von Dateien als auch das Schreiben von Bildern. Dieses Interface wurde dementsprechend, um das Interface Segregation Principle zu erfüllen, in zwei Interfaces aufgeteilt. Einerseits das Interface \texttt{IImageWriter} und andererseits das (bereits bestehende) Interface \texttt{IFileAccessor}. Wie der Name schon sagt, kümmert sich das Interface \texttt{IImageWriter} um das Schreiben von Bildern und das Interface \texttt{IFileAccessor} mit dem Lesen und Schreiben von Dateien. In \href{https://github.com/Bronzila/WeatherWallpaper/commit/8db38466c2185e16ef90f71af485e00b57b09032}{\color{blue}diesem Commit} ist das Segmentieren dieser beiden Interfaces zu erkennen.
+Generell haben einige Interfaces das ISP nicht erfüllt, allerdings war keins dieser Beispiele so eindringlich wie das Obere, da die meisten Interfaces nur ein aufrufenden Client hatten und auf diesen einzelnen Client nicht passgenau zugeschnitten waren.
 \subsubsection{Dependency Inversion Principle}
 
 \subsection{GRASP}
