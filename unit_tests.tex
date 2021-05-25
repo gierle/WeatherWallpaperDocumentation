@@ -6,7 +6,7 @@ Das bedeutet also, dass sie...
 \begin{itemize}
 \item Automatic, also eigenständig ablaufen und ihre Ergebnisse selbst prüfen. Dies wird durch das Testing-Framework XUnit gewährleistet.
 \begin{itemize}
-\item Alle Unit-Tests sind \href{https://github.com/Bronzila/WeatherWallpaper/tree/master/WeatherWallpaperTest}{\color{blue}hier} zu finden.
+\item In Abbildung \ref{TestExplorer} wird der Test-Explorer dargestellt. Darüber lassen sich die Tests ausführen und die Ergebnisse überprüfen.
 \end{itemize}
 \item Thorough, also gründlich (genug) sind und die wichtigsten Funktionalitäten prüfen. Dazu gehört bei unserem Use-Case:
 \begin{itemize}
@@ -25,6 +25,11 @@ Das bedeutet also, dass sie...
 \item Ein Beispiels-Unit-Test ist \href{https://github.com/Bronzila/WeatherWallpaper/blob/master/WeatherWallpaperTest/ImageHandlerTest.cs}{\color{blue}hier} zu finden.
 \end{itemize}
 \end{itemize}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.3\textwidth]{Bilder/TestExplorer}
+\caption[Unit-Test Ergebnisse im Test-Explorer]{\label{TestExplorer} Unit-Test Ergebnisse im Test-Explorer}
+\end{figure}
 \subsection{Beispiel für Unit-Tests und Mocks}
 Die Unit-Test wurden, sofern möglich, in der AAA-Normalform entwickelt. Bei Unit-Tests, die Exceptions erwarten musste der Act- und Assert-Schritt teilweise zusammengeführt werden. In Listing \ref{ConfValidator} wird einerseits gezeigt, wie der zu testende ConfigValidator im Konstruktor vor jedem Testdurchlauf neu initialisiert wird und die \texttt{ValidationAspects} registriert werden. Im Test selbst wird eine fehlerhafte Konfiguration erzeugt, da im Stadtnamen Zahlen vorhanden sind. Daraufhin wird überprüft, ob die Validierung die richtige \texttt{Exception} wirft und ob die \texttt{ExceptionMessage} richtig ist, also der Fehler korrekt erkannt wurde.
 
@@ -34,7 +39,7 @@ Die Unit-Test wurden, sofern möglich, in der AAA-Normalform entwickelt. Bei Uni
 \label{ConfValidator}
 \end{listing}
 
-Mock-Objekte werden verwendet um einzelne Klassen isoliert zu testen und damit lediglich die einzelne Unit, also Einheit zu testen. Diese Mock-Objekte ersetzen die eigentlichen Abhängigkeiten der Klasse. Dabei wird ein Mock vorerst eingelernt, um mindestens die notwendige Funktionalität der Abhängigkeit bereitstellen zu können. Ein Beispiel für Mocks wird in Listing \ref{ImageHandler} ein Test für den \texttt{ImageHandler} dargestellt. Dabei wird das Interface \texttt{IAPICaller} gemockt und die in Zeile x definierte \texttt{correctApiResponse} beim Aufruf der \texttt{Get}-Methode des API-Callers zurückgegeben. Durch den Einsatz des Mocks, lässt sich die Funktionalität des \texttt{ImageHandlers} testen ohne einen realen API-Caller zu verwenden. Am Schluss wird überprüft, ob das Ergebnis des Aufrufs mit dem erwarteten, eingegebenen Ergebnis übereinstimmt.
+Mock-Objekte werden verwendet um einzelne Klassen isoliert zu testen und damit lediglich die einzelne Unit, also Einheit zu testen. Diese Mock-Objekte ersetzen die eigentlichen Abhängigkeiten der Klasse. Dabei wird ein Mock vorerst eingelernt, um mindestens die notwendige Funktionalität der Abhängigkeit bereitstellen zu können und nach dem Verwenden verifiziert, um sicher zu gehen, dass die gemockte Methode auch aufgerufen wurde. Auch hierbei wurde versucht die extra Schritte Capture und Verify, sofern möglich, aufzuzeigen und zu verwenden. Dies war beispielsweise bei dem Mocken eines \texttt{HttpClient} nicht möglich, da dieser kein Interface anbietet, dass sich mocken lässt. Daher wird hierbei auf das NuGet-Paket \texttt{RichardSzalay.MockHttp} zurückgegriffen, welches hierfür einen Workaround bietet. Das Paket ermöglicht allerdings leider kein Verifizieren. Als Beispiel für Mocks wird in Listing \ref{ImageHandler} ein Test für den \texttt{ImageHandler} dargestellt. Dabei wird das Interface \texttt{IAPICaller} gemockt und die in Zeile x definierte \texttt{correctApiResponse} beim Aufruf der \texttt{Get}-Methode des API-Callers zurückgegeben. Durch den Einsatz des Mocks, lässt sich die Funktionalität des \texttt{ImageHandlers} testen ohne einen realen API-Caller zu verwenden. Am Schluss wird überprüft, ob das Ergebnis des Aufrufs mit dem erwarteten, eingegebenen Ergebnis übereinstimmt.
 
 \begin{listing}[h]
 \inputminted[linenos=true,frame=lines]{csharp}{Listings/ImageHandlerTest.cs}
@@ -43,7 +48,7 @@ Mock-Objekte werden verwendet um einzelne Klassen isoliert zu testen und damit l
 \end{listing}
 
 \subsection{Code Coverage}
-Mithilfe der Visual Studio 2019 Enterprise Version lässt sich die Code Coverage für das Projekt ermitteln. Dabei erreicht WeatherWallpaper eine Code Coverage von knapp 42\%. Dies ist in Abbildung \ref{CodeCoverage} zu sehen. 
+Mithilfe der Visual Studio 2019 Enterprise Version lässt sich die Code Coverage für das Projekt ermitteln. Dabei erreicht WeatherWallpaper eine Code Coverage von knapp 42\%. Dies ist in Abbildung \ref{CodeCoverage} zu sehen. Hierbei ist nur das blau hinterlegte Projekt zu beachten, da das andere Projekt das Test-Projekt selbst ist. 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\textwidth]{Bilder/CodeCoverage}
