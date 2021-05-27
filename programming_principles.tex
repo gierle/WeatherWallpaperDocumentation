@@ -28,38 +28,68 @@ Diese beiden Prinzipien sind essentielle Grundkonzepte bei GRASP.\\
 \textit{Low Coupling} ist ein Maß über die Abhängigkeit einer Komponente zu ihrem Umfeld.
 Das Prinzip ermöglicht vor allem eine höhere Anpassbarkeit der Komponente, ein einfacheres Verständnis über die Funktionsweise dieser und ein leichteres Testen aufgrund geringer Abhängigkeiten zu anderen Komponenten.\\
 \textit{High Cohesion} hingegen gibt Auskunft über den Zusammenhalt innerhalb einer Komponente.
-Es wird also gemessen, wie eng die Methoden und Attribute zusammenarbeiten.
+Es wird also gemessen, wie eng die Methoden und Attribute innerhalb einer Komponente (bspw. einer Klasse) zusammenarbeiten.
 Dies reduziert hauptsächlich die Komplexität des Gesamtsystems, da Klassen sinnvoll strukturiert werden.
 Beide bedingen sich gegenseitig: Code mit hoher Kohäsion besitzt oft eine geringe Kopplung.\\
 \\
-\begin{itemize}
-	\item \texttt{ImageHandler}		
-	\item \texttt{WeatherHandler}	%  weniger Abhängigkeit --> einzige Koppelung bspw. "GetImageData", alle anderen Verbindungen eliminiert
-\end{itemize}
+Die Klassen \texttt{WeatherHandler} und \texttt{ImageHandler} erhalten Informationen über die derzeitige Konfiguration bzw. über das aktuelle Wetter.
+Sie sind dafür zuständig mithilfe der jeweiligen Information eine URL für die spätere API Abfrage zu erstellen.
+Für das Zusammenstellen der zusätzlichen Abfrageattribute ist die jeweilige Funktion \texttt{BuildRouteString()} zuständig.
+Beim \texttt{ImageHandler} beispielsweise wurde diese Funktion außerhalb der eigentlichen Klasse - in der Controller-Klasse \texttt{Refresher} - aufgerufen. Dabei wurde ein String mit zusätzlichen Abfrageparameter zusammengebaut und daraufhin die Funktion \texttt{GetImageData()} mit eben diesem String als Parameter aufgerufen. 
+Im Codebeispiel \ref{lst:ImageHandler_old} ist die Klasse \texttt{ImageHandler} vereinfacht dargestellt. \\
+\\
+\begin{listing}[tbt]
+	\inputminted[linenos=true,frame=lines]{csharp}{Listings/ImageHandler_old.cs}
+	\caption{Alte Implementierung des ImageHandlers mit hoher Kopplung und niedriger Kohäsion}
+	\label{lst:ImageHandler_old}
+\end{listing}
 
-%\subsubsection{High Cohesion}
-%\begin{itemize}
-	%\item \texttt{ImageHandler}		% GetQueryStringFromAttributes wird eigentlich nur von außen genutzt
-	%\item \texttt{WeatherHandler}	% BuildRouteString wird eigentlich nur von außen genutzt 			--> beide sollten innerhalb der Klasse ausgeführt werden
-%\end{itemize}
+Dadurch besitzt die Klasse zwei direkte Kopplungen zur \texttt{Refresher} Klasse und gleichzeitig wird die Route-String Funktion nie in der eigenen Klasse aufgerufen.
+Nach den genannten Prinzipien soll \texttt{BuildRouteString()} nicht mehr außerhalb, sondern aus der \texttt{GetImageData()} Funktion heraus aufgerufen werden. 
+Da die Interpretation der aktuelle Wetterdaten zum Bau des Strings benötigt wird, muss diese der Funktion \texttt{GetImageData()} als Parameter übergeben werden an Stelle des fertigen Route-Strings.
+Somit wird die Abhängigkeit der Klasse zum \texttt{Refresher} reduziert und gleichzeitig die Kohäsion erhöht.
+Die neue Version wird in dem Beispiel \ref{lst:ImageHandler_new} gezeigt\footnote{Diese Änderungen wurden im Commit \url{https://github.com/Bronzila/WeatherWallpaper/commit/25e8c58a47945383746d8151ed4bfbed01b1d24c} durchgeführt.}.\\
+\\
+\begin{listing}[tbt]
+	\inputminted[linenos=true,frame=lines]{csharp}{Listings/ImageHandler_new.cs}
+	\caption{Überarbeitung des ImageHandlers mit niedrigerer Kopplung und hoher Kohäsion}
+	\label{lst:ImageHandler_new}
+\end{listing}
+Ähnliches wurden ebenfalls für die \texttt{WeatherHandler} Klasse mit der Funktion \texttt{Location"-As"-Route"-Attribute()} geändert.
+Auch hier verringert sich die Abhängigkeit und die Kohäsion steigt.
 
 \subsubsection{Indirection}
-Unter \textit{Indirection} versteht man die zentrale Verwaltung von Aufgaben an einzelne Komponenten, wobei untereinander keine direkte Kopplung besteht.
-Somit ist es ein Prinzip zur Code-Strukturierung und kann zu geringer Kopplung führen.
-
-
-%\begin{itemize}
-%	\item \texttt{Refresher}		% machen wir das hier nicht ausschließlich?
-%\end{itemize}
-
+Unter \textit{Indirection} versteht man die zentrale Verwaltung von Aufgaben an einzelne Komponenten, wodurch untereinander keine direkte Kopplung bestehen muss.
+Somit ist es ein Prinzip zur Code-Strukturierung und kann zu geringer Kopplung führen, da eine direkte Abhängigkeit der Klassen untereinander vermieden wird.
+Gleichzeitig bietet diese Struktur trotzdem weiterhin gute Möglichkeiten Komponenten wiederzuverwenden.\\
+\\
+Bei unserem Programmentwurf soll ein Timer nach einem gewissen Intervall alle Aktionen zum Wechsel des Hintergrundbildes durchführen.
+Da hierbei viele verschiedene Komponenten zusammenhängen, beispielsweise die Benutzeroberfläche, zwei unterschiedliche API-Abfragen und das Herunterladen eines Bildes, wäre das Projekt sehr schnell unübersichtlich und verschachtelt geworden.\\
+Alle Klassen hätten somit untereinander eine Abhängigkeit und Wiederverwendbarkeit wäre nur eingeschränkt möglich.
+Deshalb wurde die zentrale Klasse \texttt{Refresher} mit der Funktion \texttt{Refresh()} implementiert.
+Diese kann vom Timer oder direkt aus der Benutzeroberfläche aufgerufen werden und \enquote{delegiert} die Arbeit an einzelne Klassen.
+Funktionsaufrufe werden nacheinander ausgeführt und die benötigten Rückgabewerte als Parameter in die nächste Funktion übergeben.
+Dadurch entsteht eine indirekte Abhängigkeit, wodurch alles übersichtlich bleibt.
+% Ein ähnliches Prinzip findet sich beim Controller des Entwurfsmusters MVC wieder.
 \subsubsection{Polymorphism}
+\label{sec:polymorphism}
 Ebenfalls zur Code-Strukturierung trägt das Prinzip des Polymorphismus bei.
-Dadurch kann das Verhalten abhängig vom konkreten Typ jeweils geändert werden; Funktionen erhalten somit eine neue Implementierung.
-% Haben wir das überhaupt, wenn wir keine Vererbung außer Interfaces haben?
+Dadurch kann das Verhalten abhängig vom konkreten Typ jeweils geändert werden; Funktionen erhalten somit eine neue Implementierung.\\
+
+Dies ist bei unserem Programm in der Klasse \texttt{ConfigValidator} deutlich zu erkennen.
+Sie validiert die eingegebene Funktion, wobei mehrere Validierungsaspekte separat in Betracht gezogen werden.
+Validierungsaspekte sind Implementierungen des Interfaces \texttt{IValidationAspect}, welches eine Funktion \texttt{Validate(Config)} besitzt.
+
+Diese Aspekte können nun einzeln über die Funktion \texttt{Register(IValidationAspect)} zu einer Liste hinzugefügt werden. 
+Über \texttt{ValidateInputs(Config)} wird die eingegebene Konfiguration anhand dieser Aspekte überprüft.
+Dafür wird mit jedem Aspekt in der Liste die jeweilige Funktion \texttt{Validate(Config)} aufgerufen.
+Da die Implementierungen dieser Funktion sich von Typ zu Typ unterscheiden, liegt hier eine indirekte Konditionalstruktur, also Polymorphismus vor.
+Im Listing \ref{lst:ConfigValidator} ist der Zusammenhang von \texttt{IValidationAspekt} und \texttt{ValidateInputs(Config)} deutlich gezeigt.
+
 
 \subsubsection{Pure Fabrication}
 Um eine geringe Kopplung und gleichzeitig hohe Kohäsion erreichen zu können, trennt dieses Prinzip die Problemdomäne von der zugrundeliegenden Technologie.
-Es entsteht also eine Klasse ohne jeglichen Bezug zum Problem, sie kann somit also überall wiederverwendet werden - eine reine Service Klasse.
+Es entsteht also eine Klasse ohne jeglichen Bezug zum Problem, sie kann somit überall wiederverwendet werden - eine reine Service Klasse bei Domain-Driven-Design.
 Daher beschreibt das Prinzip den Aufbau der Architektur im Einklang mit den anderen Prinzipien.\\
 \\
 Die Klasse \texttt{ConfigHandler} ist für die Verwaltung der Konfiguration des Nutzers zuständig.
@@ -67,10 +97,12 @@ Der Zugriff auf das Dateisystem ist über das Interface \texttt{IFileAccessor} a
 Dadurch ist die Problemdomäne durch den \texttt{ConfigHandler} abgedeckt.
 Er löst das Problem der Verwaltung der Konfiguration und delegiert die eigentliche Umsetzung des Speicherns und Ladens an eine andere Komponente.\\
 \\
-Gleichzeitig kümmert sich die Klasse \texttt{ConfigValidator} um das Problem der Validierung einer Konfiguration.
+Gleichzeitig kümmert sich die Klasse \texttt{ConfigValidator}, wie in Kapitel \ref{sec:polymorphism} beschrieben um das Problem der Validierung einer Konfiguration.
 Hierbei werden verschiedene Validierungsaspekte in Betracht gezogen; jeder Aspekt wird einzeln validiert.
-Die Methode \texttt{ValidateInputs()} befindet sich somit in der Problemdomäne und gibt an, ob alle Eingaben valide sind.
-Einzelne Aspekte werden über Implementierungen des Interfaces \texttt{IValidationAspect} auf Technologie-Ebene untersucht. Dies ist in Abbildung \ref{lst:ConfigValidator} dargestellt.
+Die Methode \texttt{ValidateInputs(Config)} befindet sich somit in der Problemdomäne und gibt an, ob alle Eingaben valide sind.
+Einzelne Aspekte werden über Implementierungen des Interfaces \texttt{IValidationAspect} auf Technologie-Ebene untersucht. 
+Die Funktion \texttt{Validate(Config)} ist auf jeden Aspekt angepasst und bestätigt dessen Korrektheit.
+Beide Funktionen sind in der Abbildung \ref{lst:ConfigValidator} dargestellt.
 
 \begin{listing}[tbt]
 	\inputminted[linenos=true,frame=lines]{csharp}{Listings/ConfigValidator.cs}
@@ -90,17 +122,46 @@ Einzelne Aspekte werden über Implementierungen des Interfaces \texttt{IValidati
 
 \subsubsection{Protected Variations}
 Um Elemente bei der Kopplung mit variierenden Implementierungen zu schützen, soll laut diesem Prinzip über eine gemeinsame Schnittstelle zugegriffen werden.
-Somit können Veränderungen eines Elementes keinen (unerwünschten) Einfluss auf andere Elemente haben.
+Somit können Veränderungen eines Elementes keinen (unerwünschten) Einfluss auf andere Elemente haben.\\
+\\
+Bei der Clean Architecture \ref{sec:clean_architecture} ist über das Dependency Inversion Prinzip geregelt, dass Ab"-häng"-ig"-kei"-ten von innen nach außen zu jeder Zeit über ein Interface umgekehrt werden können und somit der Dependency Rule entsprechen.
+Dies ist ein generelles Beispiel von Protected Variations, da man somit die innere Schicht über eine gemeinsame Schnittstelle vor einer möglichen Änderung der äußeren Schicht schützt.\\
+\\
+Ein genaueres Beispiel ist das Interface \texttt{IAPICaller}, welches den Aufruf aus beispielsweise der Klasse \texttt{ImageHandler} (Adapter-Schicht) auf die Klasse \texttt{APICaller} (Plugin-Schicht) ermöglicht.
+Es wird also dem \texttt{ImageHandler} sichergestellt, dass er über die Funktion \texttt{Get(string)} Daten über Bilder erhält.
+Somit kann eine Änderung der jeweiligen Implementierung der Beschaffungsart keinerlei Schaden beim \texttt{ImageHandler} verursachen, da eine klare gemeinsame Schnittstelle mit gegebenen Parametertypen und Rückgabetypen genutzt wird. Er muss somit nicht angepasst werden, wenn eine beschriebene Änderung vorliegt.\\
+\\
+Ähnliches gilt auch für das Interface \texttt{IBackgroundChanger}.
+Das Wechseln des Hintergrundbildes funktioniert auf verschiedenen Betriebssystemen (selbst bei verschiedenen Windowsversionen) unterschiedlich. 
+Um diesen Änderungen standhalten zu können, bietet das Interface mit der \texttt{Set(string)} Funktion eine einheitliche Schnittstelle.
+Die jeweilige Implementierung kann nun geändert werden, ohne dass eine Änderung in einer inneren Schicht notwendig ist.
 % ist das nicht immer wenn man aus einer "inneren" Schicht in einer "äußere" eine Abhängig hat
-\begin{itemize}
-	\item \texttt{IBackgroundChanger} Das Wechseln des Hintergrundbildes funktioniert auf verschiedenen Betriebssystemen (verschiedener Windowsversionen) unterschiedlich. Um dieser Änderungen standzuhalten bietet das Interface eine einheitliche Schnittstelle
-	\item \texttt{IImageWriter} Selbes
-	\item \texttt{IFileAccessor} Selbes
-	\item \texttt{IAPICaller} Bei Änderung der Beschaffungsart der Wetter- bzw. Bild Daten 
-\end{itemize}
+%\begin{itemize}
+%	\item \texttt{IBackgroundChanger} Das Wechseln des Hintergrundbildes funktioniert auf verschiedenen Betriebssystemen (verschiedener Windowsversionen) unterschiedlich. Um dieser Änderungen standzuhalten bietet das Interface eine einheitliche Schnittstelle
+%	\item \texttt{IImageWriter} Selbes
+%	\item \texttt{IFileAccessor} Selbes
+%	\item \texttt{IAPICaller} Bei Änderung der Beschaffungsart der Wetter- bzw. Bild Daten 
+%\end{itemize}
 \subsection{DRY}
-\textit{Don't Repeat Yourself} 
-% 
+Das Prinzip \textit{Don't Repeat Yourself} zielt darauf ab, Code-Wiederholungen durch Normalisierung und Abstraktion zu eliminieren.
+Es wird also darauf geachtet, dass Code nur an einer einzigen Stelle im System geschrieben und verwaltet wird.\\
+\\
+Bei WeatherWallpaper werden Anfragen an insgesamt zwei APIs versendet.
+Hierfür wurde das Interface \texttt{IAPICaller} jeweils in den Klassen \texttt{ImageAPICaller} und \texttt{WeatherAPICaller} implementiert.
+Beide Klassen waren allgemein sehr ähnlich und unterschieden sich hauptsächlich über den HTTPClient, welcher logischerweise unterschiedliche Basisadressen erhält um die jeweilige API zu erreichen.
+Gleichzeitig sind statische Felder, wie z.B. der API-Key oder andere, fix ausgewählte Parameter unterschiedlich.
+Beide Klassen verfügten über eine \texttt{Get()} Funktion, welche die variablen Parameter als String übergeben bekommen hat und die API Anfrage über den HTTPClient mit entsprechender Adresse ausführt.\\
+\\
+Aufgrund dieser Ähnlichkeit wurden beide Klassen als \texttt{APICaller} nach dem DRY-Prinzip zusammengefasst.
+Diese Klasse  erhält im Konstruktor zusätzlich zum HTTPClienten eine Liste von Strings mit API-spezifischen Feldern.
+Diese Felder werden nun im Konstruktor in gleicher Reihenfolge als String zusammengebaut und ersetzen somit die statischen Felder in der Klasse selbst\footnote{Diese Änderung wurden im Commit \url{https://github.com/Bronzila/WeatherWallpaper/commit/fb4546895d2241b8ea2391991f102bcd8f2fb685} durchgeführt.}.
 \subsection{YAGNI}
+Das Prinzip \textit{You ain't gonna need it - du wirst es nicht brauchen} besagt, dass Code nur hingeschrieben wird, wenn dieser auch wirklich nötig ist.
+Ungenutzter Code muss nämlich zeitintensiv implementiert, getestet, dokumentiert und gewartet werden; er bringt also deutlichen Zusatzaufwand mit sich.
+Daher versucht dieses Prinzip diesen sogenannten Annahme-Code zu minimieren, bzw. eliminieren.\\
+\\
+Ursprünglich war angedacht, dieses Projekt mit Hardware zu verknüpfen, an welcher dann etwa Temperatur oder Wetter allgemein angezeigt werden sollte.
+Hierfür war im \texttt{APICaller} eine \texttt{Put()} Methode bereits vorgesehen, jedoch nicht implementiert. 
+Diese wurde nach diesem Prinzip verabschiedet, damit eben kein Annahme-Code mehr verwaltet werden muss\footnote{Die Funktion wurde mit der ersten Umstrukturierung des APICallers im Commit \url{https://github.com/Bronzila/WeatherWallpaper/commit/d11c44ef92c85fed125288c195fb36ce595c660d} entfernt.}.
 % PUT Methode beim APICaller zunächst hinzugefügt, da ursprünglich angedacht war, das Ganze mit Hardware zu verknüpfen
 % Diese wurde jedoch entfernt, da wir uns auf die wirklich relevanten Use Cases konzentriert hatten --> You Aint Gonna Need It
