@@ -11,9 +11,10 @@ public void GetImageDataSuccessful()
             }}}
     };
     var responseJson = JObject.FromObject(correctApiResponse);
+    var responseJsonString = responseJson.ToString();
     var api = new Mock<IAPICaller>();
     api.Setup(caller => caller.Get(It.IsAny<string>()))
-        .Returns(Task.FromResult(responseJson)).Verifiable();
+        .Returns(Task.FromResult(responseJsonString)).Verifiable();
     // Arrange
     var handler = new ImageHandler(api.Object);
     string queryString = "?query=doesnt matter";
