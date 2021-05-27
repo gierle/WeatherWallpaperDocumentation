@@ -1,0 +1,29 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// ConfigValidator}
+\PYG{k}{private} \PYG{n}{List}\PYG{p}{\PYGZlt{}}\PYG{n}{IValidationAspect}\PYG{p}{\PYGZgt{}} \PYG{n}{\PYGZus{}validationAspects}\PYG{p}{;}
+
+\PYG{k}{public} \PYG{k}{void} \PYG{n+nf}{Register}\PYG{p}{(}\PYG{n}{IValidationAspect} \PYG{n}{aspect}\PYG{p}{)}
+\PYG{p}{\PYGZob{}}
+    \PYG{n}{\PYGZus{}validationAspects}\PYG{p}{.}\PYG{n}{Add}\PYG{p}{(}\PYG{n}{aspect}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{k}{public} \PYG{k+kt}{bool} \PYG{n+nf}{ValidateInputs}\PYG{p}{(}\PYG{n}{Config} \PYG{n}{conf}\PYG{p}{)}
+\PYG{p}{\PYGZob{}}
+    \PYG{k}{foreach} \PYG{p}{(}\PYG{k+kt}{var} \PYG{n}{aspect} \PYG{k}{in} \PYG{n}{\PYGZus{}validationAspects}\PYG{p}{)}
+    \PYG{p}{\PYGZob{}}
+        \PYG{n}{aspect}\PYG{p}{.}\PYG{n}{Validate}\PYG{p}{(}\PYG{n}{conf}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{k}{true}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{// Validation for City\PYGZhy{}Name}
+\PYG{k}{public} \PYG{k}{class} \PYG{n+nc}{IsCorrectCity} \PYG{p}{:} \PYG{n}{IValidationAspect}
+\PYG{p}{\PYGZob{}}
+    \PYG{k}{public} \PYG{k}{void} \PYG{n+nf}{Validate}\PYG{p}{(}\PYG{n}{Config} \PYG{n}{conf}\PYG{p}{)}
+    \PYG{p}{\PYGZob{}}
+        \PYG{c+c1}{// check if city contains only letters}
+        \PYG{k}{if} \PYG{p}{(!}\PYG{n}{Regex}\PYG{p}{.}\PYG{n}{IsMatch}\PYG{p}{(}\PYG{n}{conf}\PYG{p}{.}\PYG{n}{Location}\PYG{p}{.}\PYG{n}{City}\PYG{p}{,} \PYG{l+s}{@\PYGZdq{}\PYGZca{}[a\PYGZhy{}zA\PYGZhy{}Z \PYGZhy{}\PYGZsq{}]+\PYGZdl{}\PYGZdq{}}\PYG{p}{))}
+        \PYG{p}{\PYGZob{}}
+            \PYG{k}{throw} \PYG{k}{new} \PYG{n+nf}{BadConfigException}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Stadtname beinhaltet unbekannte Zeichen.\PYGZdq{}}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

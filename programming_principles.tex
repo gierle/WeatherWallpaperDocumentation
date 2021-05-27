@@ -45,6 +45,7 @@ Das Interface Segregation Principle sagt aus, dass Interfaces passgenau für die
 Die Interfaces unserer Anwendung folgen diesem Prinzip. Anhand des Interfaces \texttt{IFileAccessor} kann man die Entwicklung hin zum Erfüllen des Prinzips gut nachvollziehen, da das Interface \texttt{IFileAccessor} von zwei Klienten verwendet wird. Dabei benötigt einerseits der \texttt{ConfigHandler} den Zugriff auf Dateien (Lesen und Schreiben) und andererseits der \texttt{DownloadHelper} um das Hintergrundbild zu speichern. Das Interface \texttt{IFileAccessor} umfasst daher sowohl das Lesen/Schreiben von Dateien als auch das Schreiben von Bildern. Dieses Interface wurde dementsprechend, um das Interface Segregation Principle zu erfüllen, in zwei Interfaces aufgeteilt. Einerseits das Interface \texttt{IImageWriter} und andererseits das (bereits bestehende) Interface \texttt{IFileAccessor}. Wie der Name schon sagt, kümmert sich das Interface \texttt{IImageWriter} um das Schreiben von Bildern und das Interface \texttt{IFileAccessor} mit dem Lesen und Schreiben von Dateien. In \href{https://github.com/Bronzila/WeatherWallpaper/commit/8db38466c2185e16ef90f71af485e00b57b09032}{\color{blue}diesem Commit} ist das Segmentieren dieser beiden Interfaces zu erkennen.
 Generell haben einige Interfaces das ISP nicht erfüllt, allerdings war keins dieser Beispiele so eindringlich wie das Obere, da die meisten Interfaces nur ein aufrufenden Client hatten und auf diesen einzelnen Client nicht passgenau zugeschnitten waren.
 \subsubsection{Dependency Inversion Principle}
+\label{sec:dependency_inversion}
 
 \subsection{GRASP}
 GRASP (General Responsibility Assignment Software Patterns/Principles) sind Standardlösungen für typische Fragestellungen in der Software Entwicklung.
@@ -75,7 +76,7 @@ Für das Zusammenstellen der zusätzlichen Abfrageattribute ist die jeweilige Fu
 Beim \texttt{ImageHandler} beispielsweise wurde diese Funktion außerhalb der eigentlichen Klasse - in der Controller-Klasse \texttt{Refresher} - aufgerufen. Dabei wurde ein String mit zusätzlichen Abfrageparameter zusammengebaut und daraufhin die Funktion \texttt{GetImageData()} mit eben diesem String als Parameter aufgerufen. 
 Im Codebeispiel \ref{lst:ImageHandler_old} ist die Klasse \texttt{ImageHandler} vereinfacht dargestellt. \\
 \\
-\begin{listing}[tbt]
+\begin{listing}[htb]
 	\inputminted[linenos=true,frame=lines]{csharp}{Listings/ImageHandler_old.cs}
 	\caption{Alte Implementierung des ImageHandlers mit hoher Kopplung und niedriger Kohäsion}
 	\label{lst:ImageHandler_old}
@@ -87,7 +88,7 @@ Da die Interpretation der aktuelle Wetterdaten zum Bau des Strings benötigt wir
 Somit wird die Abhängigkeit der Klasse zum \texttt{Refresher} reduziert und gleichzeitig die Kohäsion erhöht.
 Die neue Version wird in dem Beispiel \ref{lst:ImageHandler_new} gezeigt\footnote{Diese Änderungen wurden im Commit \url{https://github.com/Bronzila/WeatherWallpaper/commit/25e8c58a47945383746d8151ed4bfbed01b1d24c} durchgeführt.}.\\
 \\
-\begin{listing}[tbt]
+\begin{listing}[htb]
 	\inputminted[linenos=true,frame=lines]{csharp}{Listings/ImageHandler_new.cs}
 	\caption{Überarbeitung des ImageHandlers mit niedrigerer Kopplung und hoher Kohäsion}
 	\label{lst:ImageHandler_new}
@@ -141,7 +142,7 @@ Einzelne Aspekte werden über Implementierungen des Interfaces \texttt{IValidati
 Die Funktion \texttt{Validate(Config)} ist auf jeden Aspekt angepasst und bestätigt dessen Korrektheit.
 Beide Funktionen sind in der Abbildung \ref{lst:ConfigValidator} dargestellt.
 
-\begin{listing}[tbt]
+\begin{listing}[htb]
 	\inputminted[linenos=true,frame=lines]{csharp}{Listings/ConfigValidator.cs}
 	\caption{ConfigValidator als Problemdomäne und IsCorrectCity als Technologiewissen}
 	\label{lst:ConfigValidator}
@@ -161,7 +162,7 @@ Beide Funktionen sind in der Abbildung \ref{lst:ConfigValidator} dargestellt.
 Um Elemente bei der Kopplung mit variierenden Implementierungen zu schützen, soll laut diesem Prinzip über eine gemeinsame Schnittstelle zugegriffen werden.
 Somit können Veränderungen eines Elementes keinen (unerwünschten) Einfluss auf andere Elemente haben.\\
 \\
-Bei der Clean Architecture \ref{sec:clean_architecture} ist über das Dependency Inversion Prinzip geregelt, dass Ab"-häng"-ig"-kei"-ten von innen nach außen zu jeder Zeit über ein Interface umgekehrt werden können und somit der Dependency Rule entsprechen.
+Bei der Clean Architecture ist über das Dependency Inversion Prinzip (siehe Kapitel \ref{sec:dependency_inversion}) geregelt, dass Ab"-häng"-ig"-kei"-ten von innen nach außen zu jeder Zeit über ein Interface umgekehrt werden können und somit der Dependency Rule entsprechen.
 Dies ist ein generelles Beispiel von Protected Variations, da man somit die innere Schicht über eine gemeinsame Schnittstelle vor einer möglichen Änderung der äußeren Schicht schützt.\\
 \\
 Ein genaueres Beispiel ist das Interface \texttt{IAPICaller}, welches den Aufruf aus beispielsweise der Klasse \texttt{ImageHandler} (Adapter-Schicht) auf die Klasse \texttt{APICaller} (Plugin-Schicht) ermöglicht.
