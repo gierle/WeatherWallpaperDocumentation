@@ -1,0 +1,17 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{public} \PYG{k}{class} \PYG{n+nc}{ImageHandler} \PYG{p}{:} \PYG{n}{IImageHandler}
+\PYG{p}{\PYGZob{}}	
+	\PYG{k}{public} \PYG{n}{ImageResponse} \PYG{n+nf}{GetImageData}\PYG{p}{(}\PYG{n}{String} \PYG{n}{QueryString}\PYG{p}{)}
+    \PYG{p}{\PYGZob{}}
+        \PYG{k+kt}{var} \PYG{n}{response} \PYG{p}{=} \PYG{n}{\PYGZus{}api}\PYG{p}{.}\PYG{n}{Get}\PYG{p}{(}\PYG{n}{QueryString}\PYG{p}{);}
+        \PYG{n}{response}\PYG{p}{.}\PYG{n}{Wait}\PYG{p}{();}
+        \PYG{k}{return} \PYG{n}{response}\PYG{p}{.}\PYG{n}{Result}\PYG{p}{.}\PYG{n}{ToObject}\PYG{p}{\PYGZlt{}}\PYG{n}{ImageResponse}\PYG{p}{\PYGZgt{}();}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k}{public} \PYG{k+kt}{string} \PYG{n+nf}{BuildRouteString}\PYG{p}{(}\PYG{n}{WeatherInterpretation} \PYG{n}{weatherInterpretation}\PYG{p}{)}
+    \PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{err}{\PYGZdl{}}\PYG{l+s}{\PYGZdq{}?query=\PYGZob{}weatherInterpretation.Weather\PYGZcb{} }
+            \PYG{n}{weatherInterpretation}\PYG{p}{.}\PYG{n}{Daytime}\PYG{p}{\PYGZcb{}} \PYG{p}{\PYGZob{}}\PYG{n}{weatherInterpretation}\PYG{p}{.}\PYG{n}{Feeling}\PYG{p}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{};}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
