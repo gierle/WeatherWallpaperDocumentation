@@ -1,0 +1,28 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+na}{[Fact]}
+\PYG{k}{public} \PYG{k}{void} \PYG{n+nf}{GetImageDataSuccessful}\PYG{p}{()}
+\PYG{p}{\PYGZob{}}
+    \PYG{c+c1}{//Arrange}
+    \PYG{k+kt}{var} \PYG{n}{correctApiResponse} \PYG{p}{=} \PYG{k}{new} \PYG{n}{ImageResponse}\PYG{p}{()}
+    \PYG{p}{\PYGZob{}}
+        \PYG{n}{Results} \PYG{p}{=} \PYG{k}{new} \PYG{n}{List}\PYG{p}{\PYGZlt{}}\PYG{n}{Images}\PYG{p}{\PYGZgt{}\PYGZob{}}
+            \PYG{k}{new} \PYG{n}{Images} \PYG{p}{\PYGZob{}} \PYG{n}{Links} \PYG{p}{=} \PYG{k}{new} \PYG{n}{Links}
+            \PYG{p}{\PYGZob{}}
+                \PYG{n}{Download} \PYG{p}{=} \PYG{l+s}{\PYGZdq{}https://unsplash.com/photos/XxElwSAH0AA/download\PYGZdq{}}
+            \PYG{p}{\PYGZcb{}\PYGZcb{}\PYGZcb{}}
+    \PYG{p}{\PYGZcb{};}
+    \PYG{k+kt}{var} \PYG{n}{responseJson} \PYG{p}{=} \PYG{n}{JObject}\PYG{p}{.}\PYG{n}{FromObject}\PYG{p}{(}\PYG{n}{correctApiResponse}\PYG{p}{);}
+    \PYG{k+kt}{var} \PYG{n}{api} \PYG{p}{=} \PYG{k}{new} \PYG{n}{Mock}\PYG{p}{\PYGZlt{}}\PYG{n}{IAPICaller}\PYG{p}{\PYGZgt{}();}
+    \PYG{n}{api}\PYG{p}{.}\PYG{n}{Setup}\PYG{p}{(}\PYG{n}{caller} \PYG{p}{=\PYGZgt{}} \PYG{n}{caller}\PYG{p}{.}\PYG{n}{Get}\PYG{p}{(}\PYG{n}{It}\PYG{p}{.}\PYG{n}{IsAny}\PYG{p}{\PYGZlt{}}\PYG{k+kt}{string}\PYG{p}{\PYGZgt{}()))}
+        \PYG{p}{.}\PYG{n}{Returns}\PYG{p}{(}\PYG{n}{Task}\PYG{p}{.}\PYG{n}{FromResult}\PYG{p}{(}\PYG{n}{responseJson}\PYG{p}{));}
+    \PYG{k+kt}{var} \PYG{n}{handler} \PYG{p}{=} \PYG{k}{new} \PYG{n}{ImageHandler}\PYG{p}{(}\PYG{n}{api}\PYG{p}{.}\PYG{n}{Object}\PYG{p}{);}
+    \PYG{k+kt}{string} \PYG{n}{queryString} \PYG{p}{=} \PYG{l+s}{\PYGZdq{}?query=doesnt matter\PYGZdq{}}\PYG{p}{;}
+
+    \PYG{c+c1}{//Act}
+    \PYG{k+kt}{var} \PYG{n}{result} \PYG{p}{=} \PYG{n}{handler}\PYG{p}{.}\PYG{n}{GetImageData}\PYG{p}{(}\PYG{n}{queryString}\PYG{p}{);}
+
+    \PYG{c+c1}{//Assert}
+    \PYG{n}{Assert}\PYG{p}{.}\PYG{n}{Equal}\PYG{p}{(}\PYG{n}{result}\PYG{p}{.}\PYG{n}{Results}\PYG{p}{.}\PYG{n}{First}\PYG{p}{().}\PYG{n}{Links}\PYG{p}{.}\PYG{n}{Download}\PYG{p}{,}
+        \PYG{n}{correctApiResponse}\PYG{p}{.}\PYG{n}{Results}\PYG{p}{.}\PYG{n}{First}\PYG{p}{().}\PYG{n}{Links}\PYG{p}{.}\PYG{n}{Download}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

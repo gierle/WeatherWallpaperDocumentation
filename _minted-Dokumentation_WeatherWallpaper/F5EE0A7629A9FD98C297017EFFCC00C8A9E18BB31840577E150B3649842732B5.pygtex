@@ -1,0 +1,16 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{public} \PYG{k}{static} \PYG{k+kt}{bool} \PYG{n+nf}{ValidateInputs}\PYG{p}{(}\PYG{n}{Config} \PYG{n}{conf}\PYG{p}{)}
+\PYG{p}{\PYGZob{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{conf}\PYG{p}{.}\PYG{n}{Interval} \PYG{p}{\PYGZlt{}} \PYG{l+m}{10} \PYG{p}{||} \PYG{n}{conf}\PYG{p}{.}\PYG{n}{Interval} \PYG{p}{\PYGZgt{}} \PYG{l+m}{300}\PYG{p}{)}\PYG{c+c1}{// check for right interval range}
+    \PYG{p}{\PYGZob{}}
+        \PYG{k}{throw} \PYG{k}{new} \PYG{n+nf}{BadConfigException}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Intervall im falschen Wertebereich.\PYGZdq{}} \PYG{p}{+}
+                                     \PYG{l+s}{\PYGZdq{} Intervall muss zwischen 10 und 300 liegen.\PYGZdq{}}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{// check if city contains only letters}
+    \PYG{k}{if} \PYG{p}{(!}\PYG{n}{Regex}\PYG{p}{.}\PYG{n}{IsMatch}\PYG{p}{(}\PYG{n}{conf}\PYG{p}{.}\PYG{n}{Location}\PYG{p}{.}\PYG{n}{City}\PYG{p}{,} \PYG{l+s}{@\PYGZdq{}\PYGZca{}[a\PYGZhy{}zA\PYGZhy{}Z \PYGZhy{}\PYGZsq{}]+\PYGZdl{}\PYGZdq{}}\PYG{p}{))}
+    \PYG{p}{\PYGZob{}}
+        \PYG{k}{throw} \PYG{k}{new} \PYG{n+nf}{BadConfigException}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Stadtname beinhaltet unbekannte Zeichen.\PYGZdq{}}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{k}{true}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
