@@ -145,10 +145,7 @@ Um eine geringe Kopplung und gleichzeitig hohe Kohäsion erreichen zu können, t
 Es entsteht also eine Klasse ohne jeglichen Bezug zum Problem, sie kann somit überall wiederverwendet werden - eine reine Service Klasse bei Domain-Driven-Design.
 Daher beschreibt das Prinzip den Aufbau der Architektur im Einklang mit den anderen Prinzipien.\\
 \\
-Die Klasse \texttt{ConfigHandler} ist für die Verwaltung der Konfiguration des Nutzers zuständig.
-Der Zugriff auf das Dateisystem ist über das Interface \texttt{IFileAccessor} ausgelagert.
-Dadurch ist die Problemdomäne durch den \texttt{ConfigHandler} abgedeckt.
-Er löst das Problem der Verwaltung der Konfiguration und delegiert die eigentliche Umsetzung des Speicherns und Ladens an eine andere Komponente.\\
+Wie bereits in Kapitel \ref{sec:srp} beschrieben war die Klasse \texttt{ConfigHandler} bisher für die Verwaltung der Konfiguration des Nutzers sowie das Konvertieren zwischen C\#-Objekt und JSON zuständig. Durch das Trennen dieser beiden Use-Cases wurde nicht nur das SRP eingehalten, sondern auch die Pure Fabrication. Das Domänen-Wissen, also das Verwalten und Halten der aktuellen Konfiguration ist im \texttt{ConfigKeeper} hinterlegt und das Technologie-Wissen, also das parsen von JSON-Objekten ist im \texttt{ConfigHandler} vorhanden.\\
 \\
 Gleichzeitig kümmert sich die Klasse \texttt{ConfigValidator}, wie in Kapitel \ref{sec:polymorphism} beschrieben um das Problem der Validierung einer Konfiguration.
 Hierbei werden verschiedene Validierungsaspekte in Betracht gezogen; jeder Aspekt wird einzeln validiert.
