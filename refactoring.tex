@@ -1,6 +1,88 @@
-% TODO
-\begin{itemize}
-	\item Code Smells identifizieren
-	\item $>= 2$ Refactoring anwenden und begründen
-\end{itemize}
-\subsection{Code Smells}
+%TODO
+%\begin{itemize}
+%	\item Code Smells identifizieren
+%	\item $>= 2$ Refactoring anwenden und begründen
+%\end{itemize}
+Bei Refactoring geht es um die Umgestaltung zur Verbesserung der Codequalität, wobei die Gesamtfunktionalität bestehen bleibt.
+Im Folgenden werden vier Code Smells und Refactoring Methoden angewandt und beschrieben.
+
+
+\subsection{Duplicated Code}
+Ein bekannter Code Smell ist doppelt vorhandener Code.
+Dies hat zur Folge, dass dieser Code auch an beiden Stellen immer gleich gewartet werden muss, also auch doppelten Aufwand fordert.
+Vergisst man hierbei eine der Stellen, sind beispielsweise Sicherheitslücken weiterhin vorhanden.
+Trotzdem ist dieser Smell sehr einfach zu beseitigen: man muss den Code zusammenführen.\\
+\\
+Wie im Kapitel \ref{sec:dry} bei dem Prinzip von DRY bereits erklärt, wurden die zwei Implementierungen des Interfaces \texttt{IAPICaller}  zu einer Klasse zusammengefasst.
+Dies war ebenfalls eine Code-Duplizierung, welche durch den dort referenzierten Commit gelöst wurde.
+
+\subsection{Large Class}
+Dieser Code Smell beschäftigt sich mit der Größe einer Klasse.
+Bei einer zu großen Klasse kann es häufig sein, dass das SRP von SOLID (siehe Kapitel \ref{sec:srp}) verletzt oder die Grundkonzepte bei GRASP (siehe \ref{sec:lc_hc}) - Low Coupling und High Cohesion - nicht erfüllt werden.
+Daher muss dieser Smell untersucht und bei Problemen die Klasse in Teilfunktionalitäten aufgeteilt werden.\\
+Bei der Vorstellung des SRP wurde eine solche Aufteilung vorgenommen und bereits genauer erklärt.
+Zusammengefasst wurde die Klasse \texttt{MainController} in vier neue Klassen aufgeteilt, da das SRP nicht mehr erfüllt war.
+Hierbei wurde in Refresh-Logik, Timer-Verwaltung, manuelle Aktualisierung mit BackgroundWorker und der GUI-Logik unterschieden.
+
+%\subsection{Extract Method}
+% tbd
+
+\subsection{Rename Method}
+Dies ist zwar kein eigener \enquote{spezieller} Code Smell, jedoch werden mit dieser Methode unpassende Methodennamen geändert.
+Eigentlich liegt hier der Smell \textit{Code Comments} zugrunde, also dass Funktionen einen undeutlichen Namen besitzen und unter anderem deshalb Kommentare im Code nötig sind.\\
+In unserem Fall wurde es jedoch angewendet, da zwei eigenständige Methoden unterschiedlicher Klassen zwar in der Praxis ähnliches machen, aber unterschiedlich benannt wurden.
+Es handelt sich hierbei um die Klassen \texttt{ImageHandler} und \texttt{WeatherHandler}.
+Beide müssen mit ihrer Information jeweils einen Route-String zusammenbauen.
+Hierfür existierte beim \texttt{ImageHandler} die Funktion \texttt{GetQueryStringFromAttributes(WeatherInterpretation)} und beim \texttt{WeatherHandler} die Funktion \texttt{BuildRouteString(List<string>)}.
+Aus Gründen der Übersichtlichkeit und Leserlichkeit wurde für beide der Name \texttt{BuildRouteString()} normalisiert\footnote{Dieses Refactoring wurde im Commit \url{https://github.com/Bronzila/WeatherWallpaper/commit/8229814773f5c1a59d02521d873cab393e4536bd} durchgeführt.}.
+
+\subsection{Error Code}
+Hierbei handelt es sich um schlechtes Code-Design. 
+Wird bei einem Fehler spezielle Rückgabewerte geliefert, müssen diese bei jedem Aufruf abgeprüft werden.
+Dadurch existiert nicht nur zusätzlicher Code, sondern es wird nicht in Normalfall und Fehlerfall unterschieden.
+Hierfür können Exceptions ausgelöst werden.
+Diese Methode nennt man \textit{Replace Error Code with Exception}\\
+\\
+In der Klasse \texttt{ConfigHandler} wurde beim Lesen und Dekodieren einer gespeicherten Konfiguration \texttt{null} zurückgegeben, falls hierbei ein Fehler auftrat. 
+Die alte Version des Lesevorgangs wurde im Codebeispiel \ref{lst:ReadConfigFromFile_old} dargestellt.
+Falls dies beim Aufruf nicht überprüft und abgefangen wird, können NullPointerExceptions die Ausführung des Programms stoppen.\\
+Daher wurden diese Funktionen nach der Methode überarbeitet; die \texttt{BadConfigException()} mit entsprechender Nachricht wird ausgelöst\footnote{Diese Änderungen finden sich im Commit \url{https://github.com/Bronzila/WeatherWallpaper/commit/e3367e008dd79b735d30f64282d8edb929810693} wieder.}.
+Dies ist im Listing \ref{lst:ReadConfigFromFile_new} deutlich gemacht.
+
+\begin{listing}[h]
+	\inputminted[linenos=true,frame=lines]{csharp}{Listings/ReadConfigFromFile_old.cs}
+	\caption{\texttt{ReadConfigFromFile()} mit \texttt{null} als Rückgabewert}
+	\label{lst:ReadConfigFromFile_old}
+\end{listing}
+
+\begin{listing}[h]
+	\inputminted[linenos=true,frame=lines]{csharp}{Listings/ReadConfigFromFile_new.cs}
+	\caption{\texttt{ReadConfigFromFile()} überarbeitet nach Replace Error Code with Exception}
+	\label{lst:ReadConfigFromFile_new}
+\end{listing}
+
+\subsection{Weitere}
+Die folgenden Code Smells wurden zwar analysiert, jedoch entweder nicht direkt umgesetzt oder sind nicht existent.
+\paragraph{Long Method}
+Die Long Method, ähnlich wie \textit{Long Class}, bezieht sich auf die Größe einer Methode.
+Hierbei führen lange Methoden zu schlechterer Lesbarkeit und man spart sich Kommentare.
+Dies wurde zu teilen bei dem \texttt{WeatherHandler} gefunden, welcher die Methode \texttt{GetWeatherData(Config)} besitzt (siehe Listing \ref{lst:GetWeatherData}).
+Hier könnte man die Zeilen 3-5 zusammengefasst werden als eigene Funktion, welche sich um den Zusammenbau des Routestrings kümmert, wie es beim \texttt{ImageHandler} der Fall ist (siehe Listing \ref{lst:ImageHandler_new}).\\
+Diese Klassen haben jedoch ein komplett anderes Problem, und zwar \textit{Duplicated Code}. 
+Ähnlich wie oben bei diesem Code Smell beschrieben, müssten beide Klassen zusammengefasst werden.
+Dies wurde aus zeitlichen Gründen nicht weiter verfolgt.
+
+\begin{listing}[h]
+	\inputminted[linenos=true,frame=lines]{csharp}{Listings/GetWeatherData.cs}
+	\caption{\texttt{GetWeatherData(Config)}}
+	\label{lst:GetWeatherData}
+\end{listing}
+\paragraph{Shotgun Surgery}
+Dieser Code Smell basiert eigentlich auf anderen Smells. 
+Um eine Änderung durchführen zu können, muss der Code hier an vielen verschiedenen Stellen im Programm geändert werden.
+Dies wurde von uns nicht eindeutig als solches identifiziert, jedoch kann es im Zusammenhang mit dem, in \textit{Long Method} beschriebenen Problem auftreten.
+\paragraph{Switch Statement}
+\texttt{Switch}-Anweisungen wurden nicht verwendet.
+\paragraph{Code Comments}
+Erklärende Kommentare wurden nur im äußersten Notfall eingesetzt.
+Es ist keine weitere Reduzierung dieser notwendig.
