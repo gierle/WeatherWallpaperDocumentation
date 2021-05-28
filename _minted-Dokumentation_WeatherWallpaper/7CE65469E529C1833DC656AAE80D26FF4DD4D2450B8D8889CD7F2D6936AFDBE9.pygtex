@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{public} \PYG{n}{JObject} \PYG{n+nf}{ReadConfigFromFile}\PYG{p}{()}
+\PYG{p}{\PYGZob{}}
+    \PYG{k}{try}
+    \PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{JObject}\PYG{p}{.}\PYG{n}{Parse}\PYG{p}{(}\PYG{n}{\PYGZus{}fileAccessor}\PYG{p}{.}\PYG{n}{ReadFile}\PYG{p}{(}\PYG{n}{\PYGZus{}configPath}\PYG{p}{));}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{catch}
+    \PYG{p}{\PYGZob{}}
+        \PYG{k}{throw} \PYG{k}{new} \PYG{n+nf}{BadConfigException}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Einlesen der gespeicherten Konfiguration \PYGZdq{}} \PYG{p}{+}
+                                     \PYG{l+s}{\PYGZdq{}nicht moeglich.\PYGZdq{}}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

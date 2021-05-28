@@ -1,5 +1,6 @@
 \subsection{SOLID}
 \subsubsection{Single Responsibility Principle}
+\label{sec:srp}
 Das Single Responsibility Principle (SRP) wird auch als Prinzip der einzigen Zuständigkeit bezeichnet. Dementsprechend soll eine Klasse nur einen Grund haben, um geändert werden zu müssen. Dadurch erhält jedes Objekt eine klar definierte Aufgabe. Durch das Anwenden dieses Prinzips, wird die Seperation of Concerns (SoC) umgesetzt. Sollte das Prinzip der Single Responsibility verletzt sein, so lässt sich dies relativ einfach mit der Antwort auf die Frage \glqq{}Was macht die Klasse?\grqq{} herausfinden. Sollte sich eine Konjunktion in der Antwort auf diese Frage befinden, kann man davon ausgehen, dass das SRP verletzt ist.
 
 Als Beispiel für die Anwendung des SRP wird der ehemalige \texttt{MainController} betrachtet. Die Klasse als UML ist in Abbildung \ref{MainController} zu sehen. Auf die Frage \glqq{}Was macht die Klasse?\grqq{} lassen sich vier Antworten finden:
@@ -62,6 +63,7 @@ Die ersten sechs dieser neun Prinzipien und deren Anwendung in unserem Programm 
 %\end{itemize}
 
 \subsubsection{Low Coupling \& High Cohesion}
+\label{sec:lc_hc}
 Diese beiden Prinzipien sind essentielle Grundkonzepte bei GRASP.\\
 \textit{Low Coupling} ist ein Maß über die Abhängigkeit einer Komponente zu ihrem Umfeld.
 Das Prinzip ermöglicht vor allem eine höhere Anpassbarkeit der Komponente, ein einfacheres Verständnis über die Funktionsweise dieser und ein leichteres Testen aufgrund geringer Abhängigkeiten zu anderen Komponenten.\\
@@ -181,6 +183,7 @@ Die jeweilige Implementierung kann nun geändert werden, ohne dass eine Änderun
 %	\item \texttt{IAPICaller} Bei Änderung der Beschaffungsart der Wetter- bzw. Bild Daten 
 %\end{itemize}
 \subsection{DRY}
+\label{sec:dry}
 Das Prinzip \textit{Don't Repeat Yourself} zielt darauf ab, Code-Wiederholungen durch Normalisierung und Abstraktion zu eliminieren.
 Es wird also darauf geachtet, dass Code nur an einer einzigen Stelle im System geschrieben und verwaltet wird.\\
 \\

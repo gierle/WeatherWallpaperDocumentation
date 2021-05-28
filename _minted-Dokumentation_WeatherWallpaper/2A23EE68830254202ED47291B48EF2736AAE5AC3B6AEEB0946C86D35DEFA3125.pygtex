@@ -1,0 +1,20 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{public} \PYG{n}{JObject} \PYG{n+nf}{ReadConfigFromFile}\PYG{p}{()}
+\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{string} \PYG{n}{jsonString} \PYG{p}{=} \PYG{k}{null}\PYG{p}{;}
+
+    \PYG{k}{try}
+    \PYG{p}{\PYGZob{}}
+        \PYG{n}{jsonString} \PYG{p}{=} \PYG{n}{\PYGZus{}fileAccessor}\PYG{p}{.}\PYG{n}{ReadFile}\PYG{p}{(}\PYG{n}{\PYGZus{}configPath}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{catch} \PYG{p}{(}\PYG{n}{Exception} \PYG{n}{e}\PYG{p}{)}
+    \PYG{p}{\PYGZob{}}
+        \PYG{n}{System}\PYG{p}{.}\PYG{n}{Diagnostics}\PYG{p}{.}\PYG{n}{Trace}\PYG{p}{.}\PYG{n}{WriteLine}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Couldnt read config file\PYGZdq{}}\PYG{p}{);}
+        \PYG{n}{System}\PYG{p}{.}\PYG{n}{Diagnostics}\PYG{p}{.}\PYG{n}{Trace}\PYG{p}{.}\PYG{n}{WriteLine}\PYG{p}{(}\PYG{n}{e}\PYG{p}{.}\PYG{n}{Message}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{n}{JObject} \PYG{n}{conf} \PYG{p}{=} \PYG{k+kt}{string}\PYG{p}{.}\PYG{n}{IsNullOrEmpty}\PYG{p}{(}\PYG{n}{jsonString}\PYG{p}{)} \PYG{p}{?} \PYG{k}{null} \PYG{p}{:} \PYG{n}{JObject}\PYG{p}{.}\PYG{n}{Parse}\PYG{p}{(}\PYG{n}{jsonString}\PYG{p}{);}
+
+    \PYG{k}{return} \PYG{n}{conf}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

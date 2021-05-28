@@ -1,0 +1,12 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{public} \PYG{n}{WeatherResponse} \PYG{n+nf}{GetWeatherData}\PYG{p}{(}\PYG{n}{Config} \PYG{n}{currentConfig}\PYG{p}{)}
+\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{var} \PYG{n}{routeAttributes} \PYG{p}{=} \PYG{k}{new} \PYG{n}{List}\PYG{p}{\PYGZlt{}}\PYG{k+kt}{string}\PYG{p}{\PYGZgt{}();}
+    \PYG{n}{routeAttributes}\PYG{p}{.}\PYG{n}{Add}\PYG{p}{(}\PYG{n}{LocationAsRouteAttribute}\PYG{p}{(}\PYG{n}{currentConfig}\PYG{p}{.}\PYG{n}{Location}\PYG{p}{));}
+    \PYG{k+kt}{string} \PYG{n}{attributes} \PYG{p}{=} \PYG{n}{BuildRouteString}\PYG{p}{(}\PYG{n}{routeAttributes}\PYG{p}{);}
+    \PYG{k+kt}{var} \PYG{n}{response} \PYG{p}{=} \PYG{n}{\PYGZus{}api}\PYG{p}{.}\PYG{n}{Get}\PYG{p}{(}\PYG{n}{attributes}\PYG{p}{);}
+    \PYG{n}{response}\PYG{p}{.}\PYG{n}{Wait}\PYG{p}{();}
+    \PYG{k+kt}{var} \PYG{n}{responseAsJObject} \PYG{p}{=} \PYG{n}{JObject}\PYG{p}{.}\PYG{n}{Parse}\PYG{p}{(}\PYG{n}{response}\PYG{p}{.}\PYG{n}{Result}\PYG{p}{);}
+    \PYG{k}{return} \PYG{n}{responseAsJObject}\PYG{p}{.}\PYG{n}{ToObject}\PYG{p}{\PYGZlt{}}\PYG{n}{WeatherResponse}\PYG{p}{\PYGZgt{}();}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
