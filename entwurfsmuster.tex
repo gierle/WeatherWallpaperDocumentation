@@ -4,3 +4,25 @@
 %	\item UML-Diagramm vorher und nachher
 %\end{itemize}
 
+Entwurfsmuster befassen sich mit der Lösungsansätzen für wiederkehrende Entwurfsprobleme.
+Sie sind somit eine Standardvorlage um Probleme zu umgehen.
+Dies geschieht auf einer höheren Abstraktion als objekt-orientierte Programmierung selbst.\\
+Grundlegend lassen diese Entwurfsmuster in vier Kategorien einordnen: Erzeugungsmuster (Erstellung von Instanzen), Strukturmuster (Vereinfachung des Designs), Verhaltensmuster (Zusammenarbeit von Komponenten) und Nebenläufigkeitsmuster (Multithreading).
+
+Im folgenden wird die Anwendung eines Verhaltensmusters in unserem Programm erklärt.
+
+\paragraph{Beobachter}
+Das im Code identifizierte Entwurfsmuster ist das objektbasierte Verhaltensmuster \enquote{Beobachter}.
+Es wurde in den Klassen \texttt{Refresher} und \texttt{UpdateTimer} implementiert.
+Hierbei agiert der \texttt{Refresher} als Beobachter, welcher sich im Konstruktor des Subjektes \texttt{UpdateTimer} anmeldet. \\
+Sobald das Event \texttt{ElapsedEventHandler} auftritt, also der Timer ausläuft, wird die Callback Funktion \texttt{RefreshCallback(object, ElapsedEventArgs)} des Subjektes ausgeführt.
+Diese wiederum benachrichtigt den Beobachter und die Funktion \texttt{Refresh()} wird ausgeführt.
+
+Das folgende UML Diagramm zeigt beide Klassen und ihren Zusammenhang:
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=\linewidth]{Bilder/Beobachter_UML.png}
+	\end{center}
+	\caption{UML Diagramm des Entwurfsmuster \enquote{Beobachter}}
+\end{figure}
