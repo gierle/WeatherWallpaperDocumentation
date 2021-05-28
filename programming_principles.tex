@@ -18,7 +18,13 @@ Als Beispiel für die Anwendung des SRP wird der ehemalige \texttt{MainControlle
 
 Um diese verschiedenen Responsibilities in neue Klassen aufzuteilen wurden vier neue Klassen entwickelt. Diese werden im Folgenden kurz erläutert. Im \texttt{Refresher} ist die generelle Logik, um den Hintergrund zu aktualisieren ausgelagert. Der \texttt{UpdateTimer} übernimmt das zyklische Aktualisieren des Hintergunds und der \texttt{ScreenChangeWorker} das manuelle Aktualisieren im neuen Thread. In dem neuen \texttt{MainWindowController} wird das Weitergeben der GUI-Inputs an die inneren Schichten umgesetzt. Diese vier Klassen sind \href{https://github.com/Bronzila/WeatherWallpaper/blob/master/CleanArchitecturePics/Architektur_Vorher.jpg}{\color{blue}hier} auf dem UML-Diagramm der Anwendung zu erkennen. Hierbei ist erkennbar, dass der \texttt{MainWindowController}, durch seine Adaptertätigkeiten auch in die Adapter-Schicht bei der Clean Architecture übergegangen ist.
 
-Dann noch ConfigHandler bzw Adapter und Zustand
+Eine weitere Klasse bei der das SRP nicht erfüllt war, ist der \texttt{ConfigHandler}. Dieser hatte einerseits die Adapter-Funktionalität, um ein C\#-Config-Objekt in ein JSON-String umzuwandeln, sowie einen JSON-String zu einem C\#-Config-Objekt zu parsen. Andererseits hat er auch die aktuelle Konfiguration der Anwendung gehalten und mithilfe des \texttt{ConfigValidators} diese validiert, wenn sie gespeichert werden sollte. Um diese Verletzung zu behebn wurde zweitere Tätigkeit in eine neue Klasse \texttt{ConfigKeeper} verlagert. Dies ist nicht nur ein Beispiel für das SRP, sondern auch für Pure Fabrication. Darauf wird in Kapitel \ref{sec:pureFabrication} nochmals genauer eingegangen. In Abbildung \ref{fig:ConfigHandlerSRP} ist ein UML-Diagramm vor und nach dem Implementieren der oben genannten Änderungen zu sehen.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{Bilder/ConfigHandlerSRP}
+\caption[Single Responsibility Principle: ConfigHandler Vorher - Nachher]{\label{fig:ConfigHandlerSRP} Single Responsibility Principle: ConfigHandler Vorher - Nachher}
+\end{figure}
 \subsubsection{Open/Closed Principle}
 Das Open/Closed Principle beschreibt, dass Softwäre-Entitäten offen für Erweiterung aber geschlossen bezüglich Veränderung sein sollen. Dementsprechend soll bestehender Code nicht mehr geändert werden. Bei neuen bzw. geänderten Anforderungen wird der bestehende Code also nicht angepasst/geändert, sondern lediglich erweitert.
 
@@ -132,7 +138,7 @@ Da die Implementierungen dieser Funktion sich von Typ zu Typ unterscheiden, lieg
 Im Listing \ref{lst:ConfigValidator} ist der Zusammenhang von \texttt{IValidationAspekt} und \texttt{ValidateInputs(Config)} deutlich gezeigt.
 
 
-\subsubsection{Pure Fabrication}
+\subsubsection{Pure Fabrication}\label{sec:pureFabrication}
 Um eine geringe Kopplung und gleichzeitig hohe Kohäsion erreichen zu können, trennt dieses Prinzip die Problemdomäne von der zugrundeliegenden Technologie.
 Es entsteht also eine Klasse ohne jeglichen Bezug zum Problem, sie kann somit überall wiederverwendet werden - eine reine Service Klasse bei Domain-Driven-Design.
 Daher beschreibt das Prinzip den Aufbau der Architektur im Einklang mit den anderen Prinzipien.\\
