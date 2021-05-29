@@ -69,8 +69,7 @@ Hierbei führen lange Methoden zu schlechterer Lesbarkeit und man spart sich Kom
 Dies wurde zu teilen bei dem \texttt{WeatherHandler} gefunden, welcher die Methode \texttt{GetWeatherData(Config)} besitzt (siehe Listing \ref{lst:GetWeatherData}).
 Hier könnte man die Zeilen 3-5 zusammengefasst werden als eigene Funktion, welche sich um den Zusammenbau des Routestrings kümmert, wie es beim \texttt{ImageHandler} der Fall ist (siehe Listing \ref{lst:ImageHandler_new}).\\
 Diese Klassen haben jedoch ein komplett anderes Problem, und zwar \textit{Duplicated Code}. 
-Ähnlich wie oben bei diesem Code Smell beschrieben, müssten beide Klassen zusammengefasst werden.
-Dies wurde aus zeitlichen Gründen nicht weiter verfolgt.
+Da sich die Klassen im Verhalten stark ähneln, könnte man hierbei einige Funktionalitäten wieder zusammenfassen. Dies wurde bisher allerdings noch nicht umgesetzt.
 
 \begin{listing}[h]
 	\inputminted[linenos=true,frame=lines]{csharp}{Listings/GetWeatherData.cs}
