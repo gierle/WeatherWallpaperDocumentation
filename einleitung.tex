@@ -7,4 +7,20 @@ Um dieser tristen und grauen Welt etwas Farbe einzuhauchen gibt es nun: \textbf{
 \\
 Dieses Programm bezieht aktuelle Wetterdaten eines definierten Standortes und zeigt je nach Wetterlage und Uhrzeit ein passendes Bild als Hintergrund an.
 Dadurch gleicht sich der Desktop eines jeden Nutzers an die aktuelle natürliche Stimmung, wodurch ein einheitliches Gefühl zwischen Arbeitsplatz und Umwelt vermittelt wird.
-Dies wiederum wertet das Klima nicht nur bei der Arbeit, sondern auch Zuhause spürbar auf.
+Dies wiederum wertet das Klima nicht nur bei der Arbeit, sondern auch Zuhause spürbar auf.\\
+\\
+Im Folgenden soll ein kurzer Überblick über die entwickelte Applikation gegeben werden. Die Anwendung ist eine .NET 5.0 Windows Applikation und in C\# programmiert. Die Schlüssel-Bestandteile der Applikation sind \begin{itemize}
+\item das Abfragen von APIs,
+\item das Verarbeiten der erhaltenen Daten und
+\item das Ändern des Desktop-Hintergrunds.
+\end{itemize}
+Dazu erhält der Nutzer/die Nutzerin die Möglichkeit eine eigene Konfiguration anzugeben, in dem er bestimmt für welchen Standort die Wetterdaten bezogen werden und in welchem Intervall das Hintergrundbild aktualisiert werden soll. Das Herzstück der Anwendung ist der \texttt{Refresher}. Hier läuft die oben beschriebene Logik zusammen. Dabei wird zuerst mithilfe des \texttt{WeatherHandler} die aktuellen Wetterdaten, abhängig von der Konfiguration des Nutzers/der Nutzerin, ermittelt und daraufhin mit dem \texttt{WeatherInterpreter} interpretiert. Diese Interpretation der Wetterdaten erhält daraufhin der \texttt{ImageHandler}, der ein passendes Bild zu dem interpretierten Wetter sucht. Sowohl \texttt{WeatherHandler} als auch \texttt{ImageHandler} verwenden einen \texttt{APICaller} um die APIs aufzurufen. Das Bild wird dann mithilfe des \texttt{DownloadHelper} heruntergeladen und über den \texttt{BackgroundChanger} als Hintergrundbild gesetzt. Der Refresher kann sowohl im zyklischen Betrieb (über den \texttt{UpdateTimer}) oder im manuellen Betrieb (über den \texttt{ScreenChangeWorker}) verwendet werden. Beim Speichern der Konfiguration wird diese vorerst durch den \texttt{ConfigValidator} validiert und erst bei erfolgreicher Validierung über den \texttt{ConfigHandler}, mithilfe des \texttt{FileAccessor} gespeichert. Dann wird auch das Objekt der aktuellen Konfiguration im \texttt{ConfigKeeper} ausgetauscht.
+
+Die Instanziierung aller benötigten Klassen wird in der Datei \texttt{App.xaml.cs} erledigt.\\
+\\
+Im Folgenden sind die wichtigsten Links für unser Projekt zu finden:
+\begin{itemize}
+\item \href{https://github.com/Bronzila/WeatherWallpaper}{\color{blue} \textbf{Unser Code-Git-Repository}}
+\item \href{https://github.com/Bronzila/WeatherWallpaper/releases/tag/V1}{\color{blue} \textbf{Unser erstes Release}}
+\item \href{https://github.com/gierle/WeatherWallpaperDocumentation}{\color{blue} \textbf{Unser Doku-Git-Repository}}
+\end{itemize}
