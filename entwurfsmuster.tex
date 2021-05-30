@@ -13,13 +13,14 @@ Im folgenden wird die Anwendung eines Verhaltensmusters in unserem Programm erkl
 
 \paragraph{Beobachter}
 Das im Code identifizierte Entwurfsmuster ist das objektbasierte Verhaltensmuster \enquote{Beobachter}.
-Es wurde in den Klassen \texttt{Refresher} und \texttt{UpdateTimer} implementiert.
-Hierbei agiert der \texttt{Refresher} als Beobachter, welcher sich im Konstruktor des Subjektes \texttt{UpdateTimer} anmeldet. \\
-Sobald das Event \texttt{ElapsedEventHandler} auftritt, also der Timer ausläuft, wird die Callback Funktion \texttt{RefreshCallback(object, ElapsedEventArgs)} des Subjektes ausgeführt.
-Diese wiederum benachrichtigt den Beobachter und die Funktion \texttt{Refresh()} wird ausgeführt.
+Hierbei registriert sich in der \texttt{Start()} Methode der Klasse \texttt{UpdateTimer} dieser auf das \texttt{Elapsed} Event des \texttt{Timers}.
+Hierbei wird die Methode \texttt{RefreshCallback()} angemeldet.
+Diese delegiert den Methodenaufruf an die Klasse \texttt{Refresher}, um das Hintergrundbild zu ändern.
+Der \texttt{Timer} ist das Subjekt, bei welchem sich der \texttt{UpdateTimer} anmeldet.
 
 Das folgende UML Diagramm zeigt beide Klassen und ihren Zusammenhang:
 
+\medspace
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[width=\linewidth]{Bilder/Beobachter_UML.png}
