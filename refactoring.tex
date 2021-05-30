@@ -34,7 +34,7 @@ Eigentlich liegt hier der Smell \textit{Code Comments} zugrunde, also dass Funkt
 \noindent In unserem Fall wurde es jedoch angewendet, da zwei eigenständige Methoden unterschiedlicher Klassen zwar in der Praxis ähnliches machen, aber unterschiedlich benannt wurden.
 Es handelt sich hierbei um die Klassen \texttt{ImageHandler} und \texttt{WeatherHandler}.
 Beide müssen mit ihrer Information jeweils einen Route-String zusammenbauen.
-Hierfür existierte beim \texttt{ImageHandler} die Funktion \texttt{GetQueryStringFromAttributes(WeatherInterpretation)} und beim \texttt{WeatherHandler} die Funktion \texttt{BuildRouteString(List<string>)}.
+Hierfür existierte beim \texttt{ImageHandler} die Funktion \texttt{GetQueryStringFromAttributes(WeatherInterpretation)} und beim \texttt{Weather"-Handler} die Funktion \texttt{BuildRouteString(List<string>)}.
 Aus Gründen der Übersichtlichkeit und Leserlichkeit wurde für beide der Name \texttt{BuildRouteString()} normalisiert\footnote{Dieses Refactoring wurde im Commit \url{https://github.com/Bronzila/WeatherWallpaper/commit/8229814773f5c1a59d02521d873cab393e4536bd} durchgeführt.}.
 
 \subsection{Error Code}

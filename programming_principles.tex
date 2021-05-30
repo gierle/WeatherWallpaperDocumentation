@@ -31,7 +31,7 @@ Das Open/Closed Principle beschreibt, dass Softwäre-Entitäten offen für Erwei
 
 \noindent Bei unserer Anwendung identifiziert man eine mögliche Entwicklung mit Erweiterung klar bei der Validierung der Konfiguration, hier wird also das OCP verletzt. Gerade wenn sich diese in der Zukunft nochmals anpassen sollte, weil bspw. noch weitere Präferenzen des Nutzers/der Nutzerin erfasst werden sollen.
 \begin{listing}[h]
-\inputminted[linenos=true,frame=lines, breaklines, breakbytokenanywhere]{csharp}{Listings/ValidateInputsPre.cs}
+\inputminted[linenos=true,frame=lines, breaklines, breakanywhere]{csharp}{Listings/ValidateInputsPre.cs}
 \caption{Verletzung des Open/Closed-Principle im ConfigValidator}
 \label{ConfigValidatorPre}
 \end{listing}
@@ -56,7 +56,7 @@ Generell haben einige Interfaces das ISP nicht erfüllt, allerdings war keins di
 \subsubsection{Dependency Inversion Principle}\label{sec:dependency_inversion}
 Mit dem Dependency Inversion Principle wird versucht höhere Ebenen von niedrigeren Ebenen zu entkoppeln. Dabei gilt die Regel, dass Abstraktionen nicht von Details abhängen sollen, sondern Details von Abstraktionen abhängen sollten, da Abhängigkeiten auf konkrete Klassen stark koppeln. Sollte dieses Prinzip nicht erfüllt sein, so würden Änderungen in der niedrigeren Ebene Änderungen in der höheren Ebene hervorrufen. Eine Verletzung dieses Prinzips wird mithilfe der Dependency Injection aufgelöst. Dabei sind die Klassen der höheren und niedrigeren Ebene abhängig von einem Interface anstelle von  einer konkreten Klasse. Die Referenz auf die Instanz erhalten die Klassen der höheren Ebene dann meist im Konstruktor.\\
 
-\noindent Die Verletzungen des Dependency Inversion Principle sind bei der Implementierung der Clean Architecture klar auffindbar. Sobald eine innere Schicht eine Abhängigkeit auf eine äußere Schicht hat, wird das Prinzip verletzt. In Kapitel \ref{CleanArchitectureVorher} sind diese Verletzungen nochmals kurz erläutert. Im Folgenden wird beispielhaft die Abhängigkeit vom damaligen \texttt{MainController} (mittlerweile umbenannt in \texttt{Refresher}) auf den \texttt{WeatherHandler} gezeigt. Hier wird das Prinzip verletzt, da sich der \texttt{Refresher} in der Application Code-Schicht befindet und der \texttt{WeatherHandler} in der Adapter-Schicht. Um dies zu beheben, wird das Interface \texttt{IWeatherHandler} eingesetzt. Der \texttt{WeatherHandler} implementiert dieses und der \texttt{Refresher} hat nur noch die Abhängigkeit auf ein \texttt{I"-Wea"ther"-Hand"-ler}. Das tatsächliche Objekt erhält er dann im Konstruktor über Dependency Injection. In Abbildung \ref{DIP} ist dieser kleine Ausschnitt aus dem UML-Diagramm vereinfacht dargestellt und mit Vorher/Nachher betitelt.
+\noindent Die Verletzungen des Dependency Inversion Principle sind bei der Implementierung der Clean Architecture klar auffindbar. Sobald eine innere Schicht eine Abhängigkeit auf eine äußere Schicht hat, wird das Prinzip verletzt. In Kapitel \ref{CleanArchitectureVorher} sind diese Verletzungen nochmals kurz erläutert. Im Folgenden wird beispielhaft die Abhängigkeit vom damaligen \texttt{MainController} (mittlerweile umbenannt in \texttt{Refresher}) auf den \texttt{WeatherHandler} gezeigt. Hier wird das Prinzip verletzt, da sich der \texttt{Refresher} in der Application Code-Schicht befindet und der \texttt{WeatherHandler} in der Adapter-Schicht. Um dies zu beheben, wird das Interface \texttt{IWeatherHandler} eingesetzt. Der \texttt{Weather"-Handler} implementiert dieses und der \texttt{Refresher} hat nur noch die Abhängigkeit auf ein \texttt{I"-Wea"ther"-Hand"-ler}. Das tatsächliche Objekt erhält er dann im Konstruktor über Dependency Injection. In Abbildung \ref{DIP} ist dieser kleine Ausschnitt aus dem UML-Diagramm vereinfacht dargestellt und mit Vorher/Nachher betitelt.
 
 
 \begin{figure}[ht]
@@ -95,7 +95,7 @@ Beim \texttt{ImageHandler} beispielsweise wurde diese Funktion außerhalb der ei
 Im Codebeispiel \ref{lst:ImageHandler_old} ist die Klasse \texttt{ImageHandler} vereinfacht dargestellt. \\
 \\
 \begin{listing}[htb]
-	\inputminted[linenos=true,frame=lines, breaklines, breakbytokenanywhere]{csharp}{Listings/ImageHandler_old.cs}
+	\inputminted[linenos=true,frame=lines, breaklines, breakanywhere]{csharp}{Listings/ImageHandler_old.cs}
 	\caption{Alte Implementierung des ImageHandlers mit hoher Kopplung und niedriger Kohäsion}
 	\label{lst:ImageHandler_old}
 \end{listing}
@@ -107,7 +107,7 @@ Somit wird die Abhängigkeit der Klasse zum \texttt{Refresher} reduziert und gle
 Die neue Version wird in dem Beispiel \ref{lst:ImageHandler_new} gezeigt\footnote{Diese Änderungen wurden im Commit \url{https://github.com/Bronzila/WeatherWallpaper/commit/25e8c58a47945383746d8151ed4bfbed01b1d24c} durchgeführt.}.\\
 \\
 \begin{listing}[htb]
-	\inputminted[linenos=true,frame=lines, breaklines, breakbytokenanywhere]{csharp}{Listings/ImageHandler_new.cs}
+	\inputminted[linenos=true,frame=lines, breaklines, breakanywhere]{csharp}{Listings/ImageHandler_new.cs}
 	\caption{Überarbeitung des ImageHandlers mit niedrigerer Kopplung und hoher Kohäsion}
 	\label{lst:ImageHandler_new}
 \end{listing}
