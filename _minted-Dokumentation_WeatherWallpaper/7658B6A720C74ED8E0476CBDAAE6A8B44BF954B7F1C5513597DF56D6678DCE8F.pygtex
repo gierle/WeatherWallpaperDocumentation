@@ -14,16 +14,14 @@
     \PYG{k+kt}{var} \PYG{n}{responseJson} \PYG{p}{=} \PYG{n}{JObject}\PYG{p}{.}\PYG{n}{FromObject}\PYG{p}{(}\PYG{n}{correctApiResponse}\PYG{p}{);}
     \PYG{k+kt}{var} \PYG{n}{responseJsonString} \PYG{p}{=} \PYG{n}{responseJson}\PYG{p}{.}\PYG{n}{ToString}\PYG{p}{();}
     \PYG{k+kt}{var} \PYG{n}{api} \PYG{p}{=} \PYG{k}{new} \PYG{n}{Mock}\PYG{p}{\PYGZlt{}}\PYG{n}{IAPICaller}\PYG{p}{\PYGZgt{}();}
-    \PYG{n}{api}\PYG{p}{.}\PYG{n}{Setup}\PYG{p}{(}\PYG{n}{caller} \PYG{p}{=\PYGZgt{}} \PYG{n}{caller}\PYG{p}{.}\PYG{n}{Get}\PYG{p}{(}\PYG{n}{It}\PYG{p}{.}\PYG{n}{IsAny}\PYG{p}{\PYGZlt{}}\PYG{k+kt}{string}\PYG{p}{\PYGZgt{}()))}
-        \PYG{p}{.}\PYG{n}{Returns}\PYG{p}{(}\PYG{n}{Task}\PYG{p}{.}\PYG{n}{FromResult}\PYG{p}{(}\PYG{n}{responseJsonString}\PYG{p}{)).}\PYG{n}{Verifiable}\PYG{p}{();}
+    \PYG{n}{api}\PYG{p}{.}\PYG{n}{Setup}\PYG{p}{(}\PYG{n}{caller} \PYG{p}{=\PYGZgt{}} \PYG{n}{caller}\PYG{p}{.}\PYG{n}{Get}\PYG{p}{(}\PYG{n}{It}\PYG{p}{.}\PYG{n}{IsAny}\PYG{p}{\PYGZlt{}}\PYG{k+kt}{string}\PYG{p}{\PYGZgt{}())).}\PYG{n}{Returns}\PYG{p}{(}\PYG{n}{Task}\PYG{p}{.}\PYG{n}{FromResult}\PYG{p}{(}\PYG{n}{responseJsonString}\PYG{p}{)).}\PYG{n}{Verifiable}\PYG{p}{();}
     \PYG{c+c1}{// Arrange}
     \PYG{k+kt}{var} \PYG{n}{handler} \PYG{p}{=} \PYG{k}{new} \PYG{n}{ImageHandler}\PYG{p}{(}\PYG{n}{api}\PYG{p}{.}\PYG{n}{Object}\PYG{p}{);}
     \PYG{k+kt}{string} \PYG{n}{queryString} \PYG{p}{=} \PYG{l+s}{\PYGZdq{}?query=doesnt matter\PYGZdq{}}\PYG{p}{;}
     \PYG{c+c1}{// Act}
     \PYG{k+kt}{var} \PYG{n}{result} \PYG{p}{=} \PYG{n}{handler}\PYG{p}{.}\PYG{n}{GetImageData}\PYG{p}{(}\PYG{n}{queryString}\PYG{p}{);}
     \PYG{c+c1}{// Assert}
-    \PYG{n}{Assert}\PYG{p}{.}\PYG{n}{Equal}\PYG{p}{(}\PYG{n}{result}\PYG{p}{.}\PYG{n}{Results}\PYG{p}{.}\PYG{n}{First}\PYG{p}{().}\PYG{n}{Links}\PYG{p}{.}\PYG{n}{Download}\PYG{p}{,}
-        \PYG{n}{correctApiResponse}\PYG{p}{.}\PYG{n}{Results}\PYG{p}{.}\PYG{n}{First}\PYG{p}{().}\PYG{n}{Links}\PYG{p}{.}\PYG{n}{Download}\PYG{p}{);}
+    \PYG{n}{Assert}\PYG{p}{.}\PYG{n}{Equal}\PYG{p}{(}\PYG{n}{result}\PYG{p}{.}\PYG{n}{Results}\PYG{p}{.}\PYG{n}{First}\PYG{p}{().}\PYG{n}{Links}\PYG{p}{.}\PYG{n}{Download}\PYG{p}{,} \PYG{n}{correctApiResponse}\PYG{p}{.}\PYG{n}{Results}\PYG{p}{.}\PYG{n}{First}\PYG{p}{().}\PYG{n}{Links}\PYG{p}{.}\PYG{n}{Download}\PYG{p}{);}
     \PYG{c+c1}{// Verify}
     \PYG{n}{api}\PYG{p}{.}\PYG{n}{Verify}\PYG{p}{();}
 \PYG{p}{\PYGZcb{}}

@@ -6,7 +6,6 @@ public JObject ReadConfigFromFile()
     }
     catch
     {
-        throw new BadConfigException("Einlesen der gespeicherten Konfiguration " +
-                                     "nicht moeglich.");
+        throw new BadConfigException("Einlesen der gespeicherten Konfiguration nicht moeglich.");
     }
 }

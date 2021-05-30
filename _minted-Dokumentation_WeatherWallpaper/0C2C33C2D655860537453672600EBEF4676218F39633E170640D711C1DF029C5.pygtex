@@ -11,8 +11,7 @@
 
     \PYG{k}{public} \PYG{k+kt}{string} \PYG{n+nf}{BuildRouteString}\PYG{p}{(}\PYG{n}{WeatherInterpretation} \PYG{n}{weatherInterpretation}\PYG{p}{)}
     \PYG{p}{\PYGZob{}}
-        \PYG{k}{return} \PYG{err}{\PYGZdl{}}\PYG{l+s}{\PYGZdq{}?query=\PYGZob{}weatherInterpretation.Weather\PYGZcb{} }
-            \PYG{p}{\PYGZob{}}\PYG{n}{weatherInterpretation}\PYG{p}{.}\PYG{n}{Daytime}\PYG{p}{\PYGZcb{}} \PYG{p}{\PYGZob{}}\PYG{n}{weatherInterpretation}\PYG{p}{.}\PYG{n}{Feeling}\PYG{p}{\PYGZcb{}}\PYG{l+s}{\PYGZdq{};}
+        \PYG{k}{return} \PYG{err}{\PYGZdl{}}\PYG{l+s}{\PYGZdq{}?query=\PYGZob{}weatherInterpretation.Weather\PYGZcb{} \PYGZob{}weatherInterpretation.Daytime\PYGZcb{} \PYGZob{}weatherInterpretation.Feeling\PYGZcb{}\PYGZdq{}}\PYG{p}{;}
     \PYG{p}{\PYGZcb{}}
 \PYG{p}{\PYGZcb{}}
 \end{Verbatim}

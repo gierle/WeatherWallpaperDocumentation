@@ -15,8 +15,7 @@ public class IsCorrectCity : IValidationAspect
     {
         if (!Regex.IsMatch(conf.Location.City, @"^[a-zA-Z -']+$"))
         {
-            throw new BadConfigException("Stadtname beinhaltet unbekannte 
-                Zeichen.");
+            throw new BadConfigException("Stadtname beinhaltet unbekannte Zeichen.");
         }
     }
 }

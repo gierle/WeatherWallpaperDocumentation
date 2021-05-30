@@ -26,8 +26,7 @@
     \PYG{k}{const} \PYG{k+kt}{string} \PYG{n}{actualExceptionMessage} 
         \PYG{p}{=} \PYG{l+s}{\PYGZdq{}Stadtname beinhaltet unbekannte Zeichen.\PYGZdq{}}\PYG{p}{;}
     \PYG{c+c1}{// Act, Assert}
-    \PYG{k+kt}{var} \PYG{n}{ex} \PYG{p}{=} \PYG{n}{Assert}\PYG{p}{.}\PYG{n}{Throws}\PYG{p}{\PYGZlt{}}\PYG{n}{BadConfigException}\PYG{p}{\PYGZgt{}(}
-        \PYG{p}{()} \PYG{p}{=\PYGZgt{}} \PYG{n}{\PYGZus{}configValidator}\PYG{p}{.}\PYG{n}{ValidateInputs}\PYG{p}{(}\PYG{n}{conf}\PYG{p}{));}
+    \PYG{k+kt}{var} \PYG{n}{ex} \PYG{p}{=} \PYG{n}{Assert}\PYG{p}{.}\PYG{n}{Throws}\PYG{p}{\PYGZlt{}}\PYG{n}{BadConfigException}\PYG{p}{\PYGZgt{}(()} \PYG{p}{=\PYGZgt{}} \PYG{n}{\PYGZus{}configValidator}\PYG{p}{.}\PYG{n}{ValidateInputs}\PYG{p}{(}\PYG{n}{conf}\PYG{p}{));}
     \PYG{n}{Assert}\PYG{p}{.}\PYG{n}{Equal}\PYG{p}{(}\PYG{n}{actualExceptionMessage}\PYG{p}{,} \PYG{n}{ex}\PYG{p}{.}\PYG{n}{Message}\PYG{p}{);}
 \PYG{p}{\PYGZcb{}}
 \end{Verbatim}

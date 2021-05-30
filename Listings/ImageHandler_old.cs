@@ -9,7 +9,6 @@ public class ImageHandler : IImageHandler
 
     public string BuildRouteString(WeatherInterpretation weatherInterpretation)
     {
-        return $"?query={weatherInterpretation.Weather} 
-            weatherInterpretation.Daytime} {weatherInterpretation.Feeling}";
+        return $"?query={weatherInterpretation.Weather} {weatherInterpretation.Daytime} {weatherInterpretation.Feeling}";
     }
 }

@@ -1,48 +1,61 @@
 % TODO
 Insgesamt wurden 29 Unit-Test geschrieben. Im Folgenden werden auf Einzelheiten zu den Unit-Tests eingegangen. Als Test-Framework wird das Framework XUnit verwendet.
+
 \subsection{ATRIP}
 Die entwickelten Unit-Tests befolgen die ATRIP-Regeln.
-Das bedeutet also, dass sie...
-\begin{itemize}
-\item Automatic, also eigenständig ablaufen und ihre Ergebnisse selbst prüfen. Dies wird durch das Testing-Framework XUnit gewährleistet.
-\begin{itemize}
-\item In Abbildung \ref{TestExplorer} wird der Test-Explorer dargestellt. Darüber lassen sich die Tests ausführen und die Ergebnisse überprüfen.
-\end{itemize}
-\item Thorough, also gründlich (genug) sind und die wichtigsten Funktionalitäten prüfen. Dazu gehört bei unserem Use-Case:
-\begin{itemize}
+Das bedeutet also, dass sie...\\
+
+\noindent
+\hangindent1cm
+\textbf{Automatic}, also eigenständig ablaufen und ihre Ergebnisse selbst prüfen. Dies wird durch das Testing-Framework XUnit gewährleistet.
+In Abbildung \ref{TestExplorer} wird der Test-Explorer dargestellt. Darüber lassen sich die Tests ausführen und die Ergebnisse überprüfen.\\
+
+\noindent
+\hangindent1cm
+\textbf{Thorough}, also gründlich (genug) sind und die wichtigsten Funktionalitäten prüfen. Dazu gehört bei unserem Use-Case:
+
+\begin{enumerate}[$\hspace{2cm}\bullet$]
 \item Die Analyse der Wetterdaten,
 \item Die Validierung der vom Nutzer eingegebenen Konfiguration,
 \item Das Decodieren der Konfiguration,
 \item Die Verarbeitung der Daten der APIs, sowie die Fehlerbehandlung der APIs
-\end{itemize}
-\item Repeatable, also jederzeit (automatisch) ausführbar sind. Dabei wird beispielsweise im Falle des WeatherInterpreterTest darauf geachtet, dass der Test nicht von der aktuellen Systemzeit abhängig ist.
-\begin{itemize}
-\item Dieser Unit-Test ist \href{https://github.com/Bronzila/WeatherWallpaper/blob/master/WeatherWallpaperTest/WeatherInterpreterTest.cs}{\color{blue}hier} zu finden.
-\end{itemize}
-\item Independent, also unabhängig voneinander in beliebiger Reihenfolge ausführbar sind. Kein Test ist von dem Ergebnis oder dem Ablauf eines anderen Tests abhängig.
-\item Professional, also einfach lesbar und verständlich sind.
-\begin{itemize}
-\item Ein Beispiels-Unit-Test ist \href{https://github.com/Bronzila/WeatherWallpaper/blob/master/WeatherWallpaperTest/ImageHandlerTest.cs}{\color{blue}hier} zu finden.
-\end{itemize}
-\end{itemize}
+\end{enumerate}
+
+\noindent
+\hangindent1cm
+\textbf{Repeatable}, also jederzeit (automatisch) ausführbar sind. Dabei wird beispielsweise im Falle des WeatherInterpreterTest darauf geachtet, dass der Test nicht von der aktuellen Systemzeit abhängig ist.
+Dieser Unit-Test ist \href{https://github.com/Bronzila/WeatherWallpaper/blob/master/WeatherWallpaperTest/WeatherInterpreterTest.cs}{\color{blue}hier} zu finden.\\
+
+\noindent
+\hangindent1cm
+\textbf{Independent}, also unabhängig voneinander in beliebiger Reihenfolge ausführbar sind. Kein Test ist von dem Ergebnis oder dem Ablauf eines anderen Tests abhängig.\\
+
+\noindent
+\hangindent1cm
+\textbf{Professional}, also einfach lesbar und verständlich sind.
+Ein Beispiels-Unit-Test ist \href{https://github.com/Bronzila/WeatherWallpaper/blob/master/WeatherWallpaperTest/ImageHandlerTest.cs}{\color{blue}hier} zu finden.\\
+
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.3\textwidth]{Bilder/TestExplorer}
 \caption[Unit-Test Ergebnisse im Test-Explorer]{\label{TestExplorer} Unit-Test Ergebnisse im Test-Explorer}
 \end{figure}
+
+
+
 \subsection{Beispiel für Unit-Tests und Mocks}
 Die Unit-Tests wurden, sofern möglich, in der AAA-Normalform entwickelt. Bei Unit-Tests, die Exceptions erwarten musste der Act- und Assert-Schritt teilweise zusammengeführt werden. In Listing \ref{ConfValidator} wird einerseits gezeigt, wie der zu testende ConfigValidator im Konstruktor vor jedem Testdurchlauf neu initialisiert wird und die Validierungsaspekte registriert werden. Im Test selbst wird eine fehlerhafte Konfiguration erzeugt, da im Stadtnamen Zahlen vorhanden sind. Daraufhin wird überprüft, ob die Validierung die richtige \texttt{Exception} wirft und ob die \texttt{ExceptionMessage} richtig ist, also der Fehler korrekt erkannt wurde.
 
 \begin{listing}[h]
-\inputminted[linenos=true,frame=lines]{csharp}{Listings/ConfigValidatorTest.cs}
+\inputminted[linenos=true,frame=lines, breaklines, breakbytokenanywhere]{csharp}{Listings/ConfigValidatorTest.cs}
 \caption{Unit-Test für den ConfigValidator}
 \label{ConfValidator}
 \end{listing}
 
-Mock-Objekte werden verwendet um einzelne Klassen isoliert zu testen und damit lediglich die einzelne Unit, also Einheit zu testen. Diese Mock-Objekte ersetzen die eigentlichen Abhängigkeiten der Klasse. Dabei wird ein Mock vorerst eingelernt, um mindestens die notwendige Funktionalität der Abhängigkeit bereitstellen zu können und nach dem Verwenden verifiziert, um sicher zu gehen, dass die gemockte Methode auch aufgerufen wurde. Auch hierbei wurde versucht die extra Schritte Capture und Verify, sofern möglich, aufzuzeigen und zu verwenden. Dies war beispielsweise bei dem Mocken eines \texttt{HttpClient} nicht möglich, da dieser kein Interface anbietet, dass sich mocken lässt. Daher wird hierbei auf das NuGet-Paket \texttt{RichardSzalay.MockHttp} zurückgegriffen, welches hierfür einen Workaround bietet. Das Paket ermöglicht allerdings leider kein Verifizieren. Als Beispiel für Mocks wird in Listing \ref{ImageHandler} ein Test für den \texttt{ImageHandler} dargestellt. Dabei wird das Interface \texttt{IAPICaller} gemockt und die in Zeile 5 definierte \texttt{correctApiResponse} beim Aufruf der \texttt{Get}-Methode des API-Callers zurückgegeben. Durch den Einsatz des Mocks, lässt sich die Funktionalität des \texttt{ImageHandlers} testen ohne einen realen API-Caller zu verwenden. Am Schluss wird überprüft, ob das Ergebnis des Aufrufs mit dem erwarteten, eingegebenen Ergebnis übereinstimmt.
+\noindent Mock-Objekte werden verwendet um einzelne Klassen isoliert zu testen und damit lediglich die einzelne Unit, also Einheit zu testen. Diese Mock-Objekte ersetzen die eigentlichen Abhängigkeiten der Klasse. Dabei wird ein Mock vorerst eingelernt, um mindestens die notwendige Funktionalität der Abhängigkeit bereitstellen zu können und nach dem Verwenden verifiziert, um sicher zu gehen, dass die gemockte Methode auch aufgerufen wurde. Auch hierbei wurde versucht die extra Schritte Capture und Verify, sofern möglich, aufzuzeigen und zu verwenden. Dies war beispielsweise bei dem Mocken eines \texttt{HttpClient} nicht möglich, da dieser kein Interface anbietet, dass sich mocken lässt. Daher wird hierbei auf das NuGet-Paket \texttt{RichardSzalay.MockHttp} zurückgegriffen, welches hierfür einen Workaround bietet. Das Paket ermöglicht allerdings leider kein Verifizieren. Als Beispiel für Mocks wird in Listing \ref{ImageHandler} ein Test für den \texttt{ImageHandler} dargestellt. Dabei wird das Interface \texttt{IAPICaller} gemockt und die in Zeile 5 definierte \texttt{correct"-Api"-Response} beim Aufruf der \texttt{Get}-Methode des API-Callers zurückgegeben. Durch den Einsatz des Mocks, lässt sich die Funktionalität des \texttt{ImageHandlers} testen ohne einen realen API-Caller zu verwenden. Am Schluss wird überprüft, ob das Ergebnis des Aufrufs mit dem erwarteten, eingegebenen Ergebnis übereinstimmt.
 
 \begin{listing}[h]
-\inputminted[linenos=true,frame=lines]{csharp}{Listings/ImageHandlerTest.cs}
+\inputminted[linenos, breaklines, tabsize=2, breakbytokenanywhere]{csharp}{Listings/ImageHandlerTest.cs}
 \caption{Unit-Test für den ImageHandler mit Mock}
 \label{ImageHandler}
 \end{listing}

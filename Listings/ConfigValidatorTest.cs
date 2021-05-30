@@ -25,7 +25,6 @@ public void ValidateInputsFalseCity()
     const string actualExceptionMessage 
         = "Stadtname beinhaltet unbekannte Zeichen.";
     // Act, Assert
-    var ex = Assert.Throws<BadConfigException>(
-        () => _configValidator.ValidateInputs(conf));
+    var ex = Assert.Throws<BadConfigException>(() => _configValidator.ValidateInputs(conf));
     Assert.Equal(actualExceptionMessage, ex.Message);
 }

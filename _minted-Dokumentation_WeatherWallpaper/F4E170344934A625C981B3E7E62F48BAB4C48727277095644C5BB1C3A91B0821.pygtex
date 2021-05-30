@@ -16,8 +16,7 @@
     \PYG{p}{\PYGZob{}}
         \PYG{k}{if} \PYG{p}{(!}\PYG{n}{Regex}\PYG{p}{.}\PYG{n}{IsMatch}\PYG{p}{(}\PYG{n}{conf}\PYG{p}{.}\PYG{n}{Location}\PYG{p}{.}\PYG{n}{City}\PYG{p}{,} \PYG{l+s}{@\PYGZdq{}\PYGZca{}[a\PYGZhy{}zA\PYGZhy{}Z \PYGZhy{}\PYGZsq{}]+\PYGZdl{}\PYGZdq{}}\PYG{p}{))}
         \PYG{p}{\PYGZob{}}
-            \PYG{k}{throw} \PYG{k}{new} \PYG{n+nf}{BadConfigException}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Stadtname beinhaltet unbekannte }
-                \PYG{n}{Zeichen}\PYG{p}{.}\PYG{l+s}{\PYGZdq{});}
+            \PYG{k}{throw} \PYG{k}{new} \PYG{n+nf}{BadConfigException}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Stadtname beinhaltet unbekannte Zeichen.\PYGZdq{}}\PYG{p}{);}
         \PYG{p}{\PYGZcb{}}
     \PYG{p}{\PYGZcb{}}
 \PYG{p}{\PYGZcb{}}

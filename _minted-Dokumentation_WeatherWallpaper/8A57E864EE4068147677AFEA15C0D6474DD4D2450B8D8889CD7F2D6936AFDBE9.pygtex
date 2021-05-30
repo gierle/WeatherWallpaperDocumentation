@@ -7,8 +7,7 @@
     \PYG{p}{\PYGZcb{}}
     \PYG{k}{catch}
     \PYG{p}{\PYGZob{}}
-        \PYG{k}{throw} \PYG{k}{new} \PYG{n+nf}{BadConfigException}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Einlesen der gespeicherten Konfiguration \PYGZdq{}} \PYG{p}{+}
-                                     \PYG{l+s}{\PYGZdq{}nicht moeglich.\PYGZdq{}}\PYG{p}{);}
+        \PYG{k}{throw} \PYG{k}{new} \PYG{n+nf}{BadConfigException}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}Einlesen der gespeicherten Konfiguration nicht moeglich.\PYGZdq{}}\PYG{p}{);}
     \PYG{p}{\PYGZcb{}}
 \PYG{p}{\PYGZcb{}}
 \end{Verbatim}

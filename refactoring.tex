@@ -30,7 +30,8 @@ Hierbei wurde in Refresh-Logik, Timer-Verwaltung, manuelle Aktualisierung mit Ba
 \subsection{Rename Method}
 Dies ist zwar kein eigener \enquote{spezieller} Code Smell, jedoch werden mit dieser Methode unpassende Methodennamen geändert.
 Eigentlich liegt hier der Smell \textit{Code Comments} zugrunde, also dass Funktionen einen undeutlichen Namen besitzen und unter anderem deshalb Kommentare im Code nötig sind.\\
-In unserem Fall wurde es jedoch angewendet, da zwei eigenständige Methoden unterschiedlicher Klassen zwar in der Praxis ähnliches machen, aber unterschiedlich benannt wurden.
+
+\noindent In unserem Fall wurde es jedoch angewendet, da zwei eigenständige Methoden unterschiedlicher Klassen zwar in der Praxis ähnliches machen, aber unterschiedlich benannt wurden.
 Es handelt sich hierbei um die Klassen \texttt{ImageHandler} und \texttt{WeatherHandler}.
 Beide müssen mit ihrer Information jeweils einen Route-String zusammenbauen.
 Hierfür existierte beim \texttt{ImageHandler} die Funktion \texttt{GetQueryStringFromAttributes(WeatherInterpretation)} und beim \texttt{WeatherHandler} die Funktion \texttt{BuildRouteString(List<string>)}.
@@ -50,13 +51,13 @@ Daher wurden diese Funktionen nach der Methode überarbeitet; die \texttt{BadCon
 Dies ist im Listing \ref{lst:ReadConfigFromFile_new} deutlich gemacht.
 
 \begin{listing}[h]
-	\inputminted[linenos=true,frame=lines]{csharp}{Listings/ReadConfigFromFile_old.cs}
+	\inputminted[linenos=true,frame=lines,breaklines, breaklines, breakbytokenanywhere]{csharp}{Listings/ReadConfigFromFile_old.cs}
 	\caption{\texttt{ReadConfigFromFile()} mit \texttt{null} als Rückgabewert}
 	\label{lst:ReadConfigFromFile_old}
 \end{listing}
 
 \begin{listing}[h]
-	\inputminted[linenos=true,frame=lines]{csharp}{Listings/ReadConfigFromFile_new.cs}
+	\inputminted[linenos=true,frame=lines,breaklines, breakbytokenanywhere]{csharp}{Listings/ReadConfigFromFile_new.cs}
 	\caption{\texttt{ReadConfigFromFile()} überarbeitet nach Replace Error Code with Exception}
 	\label{lst:ReadConfigFromFile_new}
 \end{listing}
@@ -68,11 +69,12 @@ Die Long Method, ähnlich wie \textit{Long Class}, bezieht sich auf die Größe 
 Hierbei führen lange Methoden zu schlechterer Lesbarkeit und man spart sich Kommentare.
 Dies wurde zu teilen bei dem \texttt{WeatherHandler} gefunden, welcher die Methode \texttt{GetWeatherData(Config)} besitzt (siehe Listing \ref{lst:GetWeatherData}).
 Hier könnte man die Zeilen 3-5 zusammengefasst werden als eigene Funktion, welche sich um den Zusammenbau des Routestrings kümmert, wie es beim \texttt{ImageHandler} der Fall ist (siehe Listing \ref{lst:ImageHandler_new}).\\
-Diese Klassen haben jedoch ein komplett anderes Problem, und zwar \textit{Duplicated Code}. 
+
+\noindent Diese Klassen haben jedoch ein komplett anderes Problem, und zwar \textit{Duplicated Code}. 
 Da sich die Klassen im Verhalten stark ähneln, könnte man hierbei einige Funktionalitäten wieder zusammenfassen. Dies wurde bisher allerdings noch nicht umgesetzt.
 
 \begin{listing}[h]
-	\inputminted[linenos=true,frame=lines]{csharp}{Listings/GetWeatherData.cs}
+	\inputminted[linenos=true,frame=lines, breaklines, breakbytokenanywhere]{csharp}{Listings/GetWeatherData.cs}
 	\caption{\texttt{GetWeatherData(Config)}}
 	\label{lst:GetWeatherData}
 \end{listing}

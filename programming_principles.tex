@@ -1,9 +1,9 @@
 \subsection{SOLID}
 \subsubsection{Single Responsibility Principle}
 \label{sec:srp}
-Das Single Responsibility Principle (SRP) wird auch als Prinzip der einzigen Zuständigkeit bezeichnet. Dementsprechend soll eine Klasse nur einen Grund haben, um geändert werden zu müssen. Dadurch erhält jedes Objekt eine klar definierte Aufgabe. Durch das Anwenden dieses Prinzips, wird die Seperation of Concerns (SoC) umgesetzt. Sollte das Prinzip der Single Responsibility verletzt sein, so lässt sich dies relativ einfach mit der Antwort auf die Frage \glqq{}Was macht die Klasse?\grqq{} herausfinden. Sollte sich eine Konjunktion in der Antwort auf diese Frage befinden, kann man davon ausgehen, dass das SRP verletzt ist.
+Das Single Responsibility Principle (SRP) wird auch als Prinzip der einzigen Zuständigkeit bezeichnet. Dementsprechend soll eine Klasse nur einen Grund haben, um geändert werden zu müssen. Dadurch erhält jedes Objekt eine klar definierte Aufgabe. Durch das Anwenden dieses Prinzips, wird die Seperation of Concerns (SoC) umgesetzt. Sollte das Prinzip der Single Responsibility verletzt sein, so lässt sich dies relativ einfach mit der Antwort auf die Frage \glqq{}Was macht die Klasse?\grqq{} herausfinden. Sollte sich eine Konjunktion in der Antwort auf diese Frage befinden, kann man davon ausgehen, dass das SRP verletzt ist.\\
 
-Als Beispiel für die Anwendung des SRP wird der ehemalige \texttt{MainController} betrachtet. Die Klasse als UML ist in Abbildung \ref{MainController} zu sehen. Auf die Frage \glqq{}Was macht die Klasse?\grqq{} lassen sich vier Antworten finden:
+\noindent Als Beispiel für die Anwendung des SRP wird der ehemalige \texttt{MainController} betrachtet. Die Klasse als UML ist in Abbildung \ref{MainController} zu sehen. Auf die Frage \glqq{}Was macht die Klasse?\grqq{} lassen sich vier Antworten finden:
 \begin{itemize}
 \item Die generelle Logik, um den Hintergrund zu aktualisieren.
 \item Das Halten und Verwalten des Timers für die zyklische Aktualisierung des Hintergrundbilds.
@@ -17,9 +17,9 @@ Als Beispiel für die Anwendung des SRP wird der ehemalige \texttt{MainControlle
 \caption[MainController in UML-Form]{\label{MainController} MainController in UML-Form}
 \end{figure}
 
-Um diese verschiedenen Responsibilities in neue Klassen aufzuteilen wurden vier neue Klassen entwickelt. Diese werden im Folgenden kurz erläutert. Im \texttt{Refresher} ist die generelle Logik, um den Hintergrund zu aktualisieren ausgelagert. Der \texttt{UpdateTimer} übernimmt das zyklische Aktualisieren des Hintergunds und der \texttt{ScreenChangeWorker} das manuelle Aktualisieren im neuen Thread. In dem neuen \texttt{MainWindowController} wird das Weitergeben der GUI-Inputs an die inneren Schichten umgesetzt. Diese vier Klassen sind \href{https://github.com/Bronzila/WeatherWallpaper/blob/master/CleanArchitecturePics/Architektur_Vorher.jpg}{\color{blue}hier} auf dem UML-Diagramm der Anwendung zu erkennen. Hierbei ist erkennbar, dass der \texttt{MainWindowController}, durch seine Adaptertätigkeiten auch in die Adapter-Schicht bei der Clean Architecture übergegangen ist.
+\noindent Um diese verschiedenen Responsibilities in neue Klassen aufzuteilen wurden vier neue Klassen entwickelt. Diese werden im Folgenden kurz erläutert. Im \texttt{Refresher} ist die generelle Logik, um den Hintergrund zu aktualisieren ausgelagert. Der \texttt{UpdateTimer} übernimmt das zyklische Aktualisieren des Hintergunds und der \texttt{ScreenChangeWorker} das manuelle Aktualisieren im neuen Thread. In dem neuen \texttt{MainWindowController} wird das Weitergeben der GUI-Inputs an die inneren Schichten umgesetzt. Diese vier Klassen sind \href{https://github.com/Bronzila/WeatherWallpaper/blob/master/CleanArchitecturePics/Architektur_Vorher.jpg}{\color{blue}hier} auf dem UML-Diagramm der Anwendung zu erkennen. Hierbei ist erkennbar, dass der \texttt{MainWindowController}, durch seine Adaptertätigkeiten auch in die Adapter-Schicht bei der Clean Architecture übergegangen ist.\\
 
-Eine weitere Klasse bei der das SRP nicht erfüllt war, ist der \texttt{ConfigHandler}. Dieser hatte einerseits die Adapter-Funktionalität, um ein C\#-Config-Objekt in ein JSON-String umzuwandeln, sowie einen JSON-String zu einem C\#-Config-Objekt zu parsen. Andererseits hat er auch die aktuelle Konfiguration der Anwendung gehalten und mithilfe des \texttt{ConfigValidators} diese validiert, wenn sie gespeichert werden sollte. Um diese Verletzung zu beheben wurde zweitere Tätigkeit in eine neue Klasse \texttt{ConfigKeeper} verlagert. Dies ist nicht nur ein Beispiel für das SRP, sondern auch für Pure Fabrication. Darauf wird in Kapitel \ref{sec:pureFabrication} nochmals eingegangen. In Abbildung \ref{fig:ConfigHandlerSRP} ist ein UML-Diagramm vor und nach dem Implementieren der oben genannten Änderungen zu sehen.
+\noindent Eine weitere Klasse bei der das SRP nicht erfüllt war, ist der \texttt{ConfigHandler}. Dieser hatte einerseits die Adapter-Funktionalität, um ein C\#-Config-Objekt in ein JSON-String umzuwandeln, sowie einen JSON-String zu einem C\#-Config-Objekt zu parsen. Andererseits hat er auch die aktuelle Konfiguration der Anwendung gehalten und mithilfe des \texttt{ConfigValidators} diese validiert, wenn sie gespeichert werden sollte. Um diese Verletzung zu beheben wurde zweitere Tätigkeit in eine neue Klasse \texttt{ConfigKeeper} verlagert. Dies ist nicht nur ein Beispiel für das SRP, sondern auch für Pure Fabrication. Darauf wird in Kapitel \ref{sec:pureFabrication} nochmals eingegangen. In Abbildung \ref{fig:ConfigHandlerSRP} ist ein UML-Diagramm vor und nach dem Implementieren der oben genannten Änderungen zu sehen.
 
 \begin{figure}[ht]
 \centering
@@ -27,36 +27,36 @@ Eine weitere Klasse bei der das SRP nicht erfüllt war, ist der \texttt{ConfigHa
 \caption[Single Responsibility Principle: ConfigHandler Vorher - Nachher]{\label{fig:ConfigHandlerSRP} Single Responsibility Principle: ConfigHandler Vorher - Nachher}
 \end{figure}
 \subsubsection{Open/Closed Principle}
-Das Open/Closed Principle beschreibt, dass Softwäre-Entitäten offen für Erweiterung aber geschlossen bezüglich Veränderung sein sollen. Dementsprechend soll bestehender Code nicht mehr geändert werden. Bei neuen bzw. geänderten Anforderungen wird der bestehende Code also nicht angepasst/geändert, sondern lediglich erweitert.
+Das Open/Closed Principle beschreibt, dass Softwäre-Entitäten offen für Erweiterung aber geschlossen bezüglich Veränderung sein sollen. Dementsprechend soll bestehender Code nicht mehr geändert werden. Bei neuen bzw. geänderten Anforderungen wird der bestehende Code also nicht angepasst/geändert, sondern lediglich erweitert.\\
 
-Bei unserer Anwendung identifiziert man eine mögliche Entwicklung mit Erweiterung klar bei der Validierung der Konfiguration, hier wird also das OCP verletzt. Gerade wenn sich diese in der Zukunft nochmals anpassen sollte, weil bspw. noch weitere Präferenzen des Nutzers/der Nutzerin erfasst werden sollen.
+\noindent Bei unserer Anwendung identifiziert man eine mögliche Entwicklung mit Erweiterung klar bei der Validierung der Konfiguration, hier wird also das OCP verletzt. Gerade wenn sich diese in der Zukunft nochmals anpassen sollte, weil bspw. noch weitere Präferenzen des Nutzers/der Nutzerin erfasst werden sollen.
 \begin{listing}[h]
-\inputminted[linenos=true,frame=lines]{csharp}{Listings/ValidateInputsPre.cs}
+\inputminted[linenos=true,frame=lines, breaklines, breakbytokenanywhere]{csharp}{Listings/ValidateInputsPre.cs}
 \caption{Verletzung des Open/Closed-Principle im ConfigValidator}
 \label{ConfigValidatorPre}
 \end{listing}
-In Listing \ref{ConfigValidatorPre} ist erkennbar, dass der Code zum Überprüfen angepasst werden müsste, falls eine neue Anforderung an die Konfiguration hinzugefügt wird. Daher wird der bisherige \texttt{ConfigValidator} umgeschrieben und hält nun eine \texttt{List<IValidationAspect>}. In dieser Liste sind alle Validierungs-Aspekte gespeichert gegen die die Eingabe getestet werden soll. Das Interface \texttt{IValidationAspect} definiert eine Methode \texttt{Validate(Config)}, welche validiert, ob die Regel eingehalten wurde. Sollte dies nicht der Fall sein, wird eine Exception geworfen. Nun muss im \texttt{ConfigValidator} lediglich über alle registrierten \texttt{IValidationAspects} iteriert werden und mit der übergebenen Config die \texttt{Validate}-Methode aufgerufen werden. Das Hinzufügen einer neuen Anforderung ist nun simpel über das Schreiben einer neuen Klasse möglich. Diese muss \texttt{IValidationAspect} implementieren und auf den \texttt{ConfigValidator} registriert werden. Der neue \texttt{ConfigValidator} und ein Beispiel für einen \texttt{IValidationAspect} ist in Listing \ref{ConfigValidatorPost} zu sehen. Hierbei ist zu beachten, dass bei negativem Testergebnis eine Exception geworfen (und kein false zurückgegeben) wird, um die genaue Fehlerursache dem Nutzer/der Nutzerin mitzuteilen. Wird keine Exception geworfen, ist mit der Konfiguration alles in Ordnung.
+In Listing \ref{ConfigValidatorPre} ist erkennbar, dass der Code zum Überprüfen angepasst werden müsste, falls eine neue Anforderung an die Konfiguration hinzugefügt wird. Daher wird der bisherige \texttt{ConfigValidator} umgeschrieben und hält nun eine \texttt{List<IValidationAspect>}. In dieser Liste sind alle Validierungs-Aspekte gespeichert gegen die die Eingabe getestet werden soll. Das Interface \texttt{IValidationAspect} definiert eine Methode \texttt{Validate(Config)}, welche validiert, ob die Regel eingehalten wurde. Sollte dies nicht der Fall sein, wird eine Exception geworfen. Nun muss im \texttt{ConfigValidator} lediglich über alle registrierten \texttt{IValidationAspects} iteriert werden und mit der übergebenen Config die \texttt{Validate}-Methode aufgerufen werden. Das Hinzufügen einer neuen Anforderung ist nun simpel über das Schreiben einer neuen Klasse möglich. Diese muss \texttt{IValidationAspect} implementieren und auf den \texttt{ConfigValidator} registriert werden. Der neue \texttt{ConfigValidator} und ein Beispiel für einen \texttt{IValidationAspect} ist in Listing \ref{ConfigValidatorPost} zu sehen. Hierbei ist zu beachten, dass bei negativem Testergebnis eine Exception geworfen (und kein false zurückgegeben) wird, um die genaue Fehlerursache dem Nutzer/der Nutzerin mitzuteilen. Wird keine Exception geworfen, ist mit der Konfiguration alles in Ordnung.\\
 
 \begin{listing}[h]
-\inputminted[linenos=true,frame=lines]{csharp}{Listings/ValidateInputsPost.cs}
+\inputminted[linenos=true,frame=lines, breaklines, breakbytokenanywhere]{csharp}{Listings/ValidateInputsPost.cs}
 \caption{Entwicklung mit Erweiterung für den ConfigValidator}
 \label{ConfigValidatorPost}
 \end{listing}
 
-Ein Punkt an dem das OCP nicht erfüllt ist, ist der \texttt{WeatherInterpreter}. Sollten in Zukunft weitere Daten zur Interpretation des Wetters dazu kommen, so müsste der Code des \texttt{WeatherInterpreters} angepasst und verändert werden.
+\noindent Ein Punkt an dem das OCP nicht erfüllt ist, ist der \texttt{WeatherInterpreter}. Sollten in Zukunft weitere Daten zur Interpretation des Wetters dazu kommen, so müsste der Code des \texttt{WeatherInterpreters} angepasst und verändert werden.
 \subsubsection{Liskov Substitution Principle}
 Das Liskov Substitution Principle sagt aus, dass Subtypen sich so wie ihr Basistyp verhalten müssen. Subtypen dürfen daher lediglich die Funktionalität ihres Basistyps erweitern, aber nicht einschränken.
 Das Liskov Substitution Principle ist in unserer Anwendung erfüllt, da abgesehen von den verwendeten Interfaces keine Vererbung verwendet wird.
 \subsubsection{Interface Segregation Principle}
 Das Interface Segregation Principle sagt aus, dass Interfaces passgenau für die aufrufenden Clients sein muss. Das Interface darf also keine Details beinhalten, die der Client gar nicht benötigt.
-Die Interfaces unserer Anwendung folgen diesem Prinzip.
+Die Interfaces unserer Anwendung folgen diesem Prinzip.\\
 
-Anhand des Interfaces \texttt{IFileAccessor} kann man die Entwicklung hin zum Erfüllen des Prinzips gut nachvollziehen, da das Interface \texttt{IFileAccessor} von zwei Klienten verwendet wird. Dabei benötigt einerseits der \texttt{ConfigHandler} den Zugriff auf Dateien (Lesen und Schreiben) und andererseits der \texttt{DownloadHelper} die Möglichkeit das Hintergrundbild zu speichern. Das Interface \texttt{IFileAccessor} umfasst daher sowohl das Lesen/Schreiben von Dateien als auch das Schreiben von Bildern. Dieses Interface wurde dementsprechend, um das Interface Segregation Principle zu erfüllen, in zwei Interfaces aufgeteilt. Einerseits das Interface \texttt{IImageWriter} und andererseits das (bereits bestehende) Interface \texttt{IFileAccessor}. Wie der Name schon sagt, kümmert sich das Interface \texttt{IImageWriter} um das Schreiben von Bildern und das Interface \texttt{IFileAccessor} mit dem Lesen und Schreiben von Dateien. In \href{https://github.com/Bronzila/WeatherWallpaper/commit/8db38466c2185e16ef90f71af485e00b57b09032}{\color{blue}diesem Commit} ist das Segmentieren dieser beiden Interfaces zu erkennen.
+\noindent Anhand des Interfaces \texttt{IFileAccessor} kann man die Entwicklung hin zum Erfüllen des Prinzips gut nachvollziehen, da das Interface \texttt{IFileAccessor} von zwei Klienten verwendet wird. Dabei benötigt einerseits der \texttt{ConfigHandler} den Zugriff auf Dateien (Lesen und Schreiben) und andererseits der \texttt{DownloadHelper} die Möglichkeit das Hintergrundbild zu speichern. Das Interface \texttt{IFileAccessor} umfasst daher sowohl das Lesen/Schreiben von Dateien als auch das Schreiben von Bildern. Dieses Interface wurde dementsprechend, um das Interface Segregation Principle zu erfüllen, in zwei Interfaces aufgeteilt. Einerseits das Interface \texttt{IImageWriter} und andererseits das (bereits bestehende) Interface \texttt{IFileAccessor}. Wie der Name schon sagt, kümmert sich das Interface \texttt{IImageWriter} um das Schreiben von Bildern und das Interface \texttt{IFileAccessor} mit dem Lesen und Schreiben von Dateien. In \href{https://github.com/Bronzila/WeatherWallpaper/commit/8db38466c2185e16ef90f71af485e00b57b09032}{\color{blue}diesem Commit} ist das Segmentieren dieser beiden Interfaces zu erkennen.
 Generell haben einige Interfaces das ISP nicht erfüllt, allerdings war keins dieser Beispiele so eindringlich wie das Obere, da die meisten Interfaces nur ein aufrufenden Client hatten und auf diesen einzelnen Client nicht passgenau zugeschnitten waren. Mittlerweile wurden auch die Interfaces, die das Prinzip nicht erfüllt haben so umgeschrieben, dass sie es erfüllen.
 \subsubsection{Dependency Inversion Principle}\label{sec:dependency_inversion}
-Mit dem Dependency Inversion Principle wird versucht höhere Ebenen von niedrigeren Ebenen zu entkoppeln. Dabei gilt die Regel, dass Abstraktionen nicht von Details abhängen sollen, sondern Details von Abstraktionen abhängen sollten, da Abhängigkeiten auf konkrete Klassen stark koppeln. Sollte dieses Prinzip nicht erfüllt sein, so würden Änderungen in der niedrigeren Ebene Änderungen in der höheren Ebene hervorrufen. Eine Verletzung dieses Prinzips wird mithilfe der Dependency Injection aufgelöst. Dabei sind die Klassen der höheren und niedrigeren Ebene abhängig von einem Interface anstelle von  einer konkreten Klasse. Die Referenz auf die Instanz erhalten die Klassen der höheren Ebene dann meist im Konstruktor.
+Mit dem Dependency Inversion Principle wird versucht höhere Ebenen von niedrigeren Ebenen zu entkoppeln. Dabei gilt die Regel, dass Abstraktionen nicht von Details abhängen sollen, sondern Details von Abstraktionen abhängen sollten, da Abhängigkeiten auf konkrete Klassen stark koppeln. Sollte dieses Prinzip nicht erfüllt sein, so würden Änderungen in der niedrigeren Ebene Änderungen in der höheren Ebene hervorrufen. Eine Verletzung dieses Prinzips wird mithilfe der Dependency Injection aufgelöst. Dabei sind die Klassen der höheren und niedrigeren Ebene abhängig von einem Interface anstelle von  einer konkreten Klasse. Die Referenz auf die Instanz erhalten die Klassen der höheren Ebene dann meist im Konstruktor.\\
 
-Die Verletzungen des Dependency Inversion Principle sind bei der Implementierung der Clean Architecture klar auffindbar. Sobald eine innere Schicht eine Abhängigkeit auf eine äußere Schicht hat, wird das Prinzip verletzt. In Kapitel \ref{CleanArchitectureVorher} sind diese Verletzungen nochmals kurz erläutert. Im Folgenden wird beispielhaft die Abhängigkeit vom damaligen \texttt{MainController} (mittlerweile umbenannt in \texttt{Refresher}) auf den \texttt{WeatherHandler} gezeigt. Hier wird das Prinzip verletzt, da sich der \texttt{Refresher} in der Application Code-Schicht befindet und der \texttt{WeatherHandler} in der Adapter-Schicht. Um dies zu beheben, wird das Interface \texttt{IWeatherHandler} eingesetzt. Der \texttt{WeatherHandler} implementiert dieses und der \texttt{Refresher} hat nur noch die Abhängigkeit auf ein \texttt{IWeatherHandler}. Das tatsächliche Objekt erhält er dann im Konstruktor über Dependency Injection. In Abbildung \ref{DIP} ist dieser kleine Ausschnitt aus dem UML-Diagramm vereinfacht dargestellt und mit Vorher/Nachher betitelt.
+\noindent Die Verletzungen des Dependency Inversion Principle sind bei der Implementierung der Clean Architecture klar auffindbar. Sobald eine innere Schicht eine Abhängigkeit auf eine äußere Schicht hat, wird das Prinzip verletzt. In Kapitel \ref{CleanArchitectureVorher} sind diese Verletzungen nochmals kurz erläutert. Im Folgenden wird beispielhaft die Abhängigkeit vom damaligen \texttt{MainController} (mittlerweile umbenannt in \texttt{Refresher}) auf den \texttt{WeatherHandler} gezeigt. Hier wird das Prinzip verletzt, da sich der \texttt{Refresher} in der Application Code-Schicht befindet und der \texttt{WeatherHandler} in der Adapter-Schicht. Um dies zu beheben, wird das Interface \texttt{IWeatherHandler} eingesetzt. Der \texttt{WeatherHandler} implementiert dieses und der \texttt{Refresher} hat nur noch die Abhängigkeit auf ein \texttt{I"-Wea"ther"-Hand"-ler}. Das tatsächliche Objekt erhält er dann im Konstruktor über Dependency Injection. In Abbildung \ref{DIP} ist dieser kleine Ausschnitt aus dem UML-Diagramm vereinfacht dargestellt und mit Vorher/Nachher betitelt.
 
 
 \begin{figure}[ht]
@@ -65,7 +65,7 @@ Die Verletzungen des Dependency Inversion Principle sind bei der Implementierung
 \caption[Beispielhafte Verletzung und Verbesserung des DIP]{\label{DIP}Beispielhafte Verletzung und Verbesserung des DIP}
 \end{figure}
 \subsection{GRASP}
-GRASP (General Responsibility Assignment Software Patterns/Principles) sind Standardlösungen für typische Fragestellungen in der Software Entwicklung.
+GRASP (General Responsibility Assignment Software Patterns/Principles) sind Stan"-dard"-lö"-sung"-en für typische Fragestellungen in der Software Entwicklung.
 Diese wurden zum ersten mal von Craig Larman in seinem Buch \enquote{Applying UML and Patterns} aus dem Jahre 1995 vorgestellt.
 Die ersten sechs dieser neun Prinzipien und deren Anwendung in unserem Programm werden im folgenden Verlauf erläutert.
 %TODO
@@ -80,9 +80,9 @@ Die ersten sechs dieser neun Prinzipien und deren Anwendung in unserem Programm 
 
 \subsubsection{Low Coupling \& High Cohesion}
 \label{sec:lc_hc}
-Diese beiden Prinzipien sind essentielle Grundkonzepte bei GRASP.\\
+Diese beiden Prinzipien sind essentielle Grundkonzepte bei GRASP.
 \textit{Low Coupling} ist ein Maß über die Abhängigkeit einer Komponente zu ihrem Umfeld.
-Das Prinzip ermöglicht vor allem eine höhere Anpassbarkeit der Komponente, ein einfacheres Verständnis über die Funktionsweise dieser und ein leichteres Testen aufgrund geringer Abhängigkeiten zu anderen Komponenten.\\
+Das Prinzip ermöglicht vor allem eine höhere Anpassbarkeit der Komponente, ein einfacheres Verständnis über die Funktionsweise dieser und ein leichteres Testen aufgrund geringer Abhängigkeiten zu anderen Komponenten.
 \textit{High Cohesion} hingegen gibt Auskunft über den Zusammenhalt innerhalb einer Komponente.
 Es wird also gemessen, wie eng die Methoden und Attribute innerhalb einer Komponente (bspw. einer Klasse) zusammenarbeiten.
 Dies reduziert hauptsächlich die Komplexität des Gesamtsystems, da Klassen sinnvoll strukturiert werden.
@@ -95,23 +95,24 @@ Beim \texttt{ImageHandler} beispielsweise wurde diese Funktion außerhalb der ei
 Im Codebeispiel \ref{lst:ImageHandler_old} ist die Klasse \texttt{ImageHandler} vereinfacht dargestellt. \\
 \\
 \begin{listing}[htb]
-	\inputminted[linenos=true,frame=lines]{csharp}{Listings/ImageHandler_old.cs}
+	\inputminted[linenos=true,frame=lines, breaklines, breakbytokenanywhere]{csharp}{Listings/ImageHandler_old.cs}
 	\caption{Alte Implementierung des ImageHandlers mit hoher Kopplung und niedriger Kohäsion}
 	\label{lst:ImageHandler_old}
 \end{listing}
 
-Dadurch besitzt die Klasse zwei direkte Kopplungen zur \texttt{Refresher} Klasse und gleichzeitig wird die Route-String Funktion nie in der eigenen Klasse aufgerufen.
+\noindent Dadurch besitzt die Klasse zwei direkte Kopplungen zur \texttt{Refresher} Klasse und gleichzeitig wird die Route-String Funktion nie in der eigenen Klasse aufgerufen.
 Nach den genannten Prinzipien soll \texttt{BuildRouteString()} nicht mehr außerhalb, sondern aus der \texttt{GetImageData()} Funktion heraus aufgerufen werden. 
 Da die Interpretation der aktuelle Wetterdaten zum Bau des Strings benötigt wird, muss diese der Funktion \texttt{GetImageData()} als Parameter übergeben werden an Stelle des fertigen Route-Strings.
 Somit wird die Abhängigkeit der Klasse zum \texttt{Refresher} reduziert und gleichzeitig die Kohäsion erhöht.
 Die neue Version wird in dem Beispiel \ref{lst:ImageHandler_new} gezeigt\footnote{Diese Änderungen wurden im Commit \url{https://github.com/Bronzila/WeatherWallpaper/commit/25e8c58a47945383746d8151ed4bfbed01b1d24c} durchgeführt.}.\\
 \\
 \begin{listing}[htb]
-	\inputminted[linenos=true,frame=lines]{csharp}{Listings/ImageHandler_new.cs}
+	\inputminted[linenos=true,frame=lines, breaklines, breakbytokenanywhere]{csharp}{Listings/ImageHandler_new.cs}
 	\caption{Überarbeitung des ImageHandlers mit niedrigerer Kopplung und hoher Kohäsion}
 	\label{lst:ImageHandler_new}
 \end{listing}
-Ähnliches wurden ebenfalls für die \texttt{WeatherHandler} Klasse mit der Funktion \texttt{Location"-As"-Route"-Attribute()} geändert.
+
+\noindent Ähnliches wurden ebenfalls für die \texttt{WeatherHandler} Klasse mit der Funktion \texttt{Location"-As"-Route"-Attribute()} geändert.
 Auch hier verringert sich die Abhängigkeit und die Kohäsion steigt.
 
 \subsubsection{Indirection}
@@ -119,9 +120,10 @@ Unter \textit{Indirection} versteht man die zentrale Verwaltung von Aufgaben an 
 Somit ist es ein Prinzip zur Code-Strukturierung und kann zu geringer Kopplung führen, da eine direkte Abhängigkeit der Klassen untereinander vermieden wird.
 Gleichzeitig bietet diese Struktur trotzdem weiterhin gute Möglichkeiten Komponenten wiederzuverwenden.\\
 \\
-Bei unserem Programmentwurf soll ein Timer nach einem gewissen Intervall alle Aktionen zum Wechsel des Hintergrundbildes durchführen.
+\noindent Bei unserem Programmentwurf soll ein Timer nach einem gewissen Intervall alle Aktionen zum Wechsel des Hintergrundbildes durchführen.
 Da hierbei viele verschiedene Komponenten zusammenhängen, beispielsweise die Benutzeroberfläche, zwei unterschiedliche API-Abfragen und das Herunterladen eines Bildes, wäre das Projekt sehr schnell unübersichtlich und verschachtelt geworden.\\
-Alle Klassen hätten somit untereinander eine Abhängigkeit und Wiederverwendbarkeit wäre nur eingeschränkt möglich.
+
+\noindent Alle Klassen hätten somit untereinander eine Abhängigkeit und Wiederverwendbarkeit wäre nur eingeschränkt möglich.
 Deshalb wurde die zentrale Klasse \texttt{Refresher} mit der Funktion \texttt{Refresh()} implementiert.
 Diese kann vom Timer oder direkt aus der Benutzeroberfläche aufgerufen werden und \enquote{delegiert} die Arbeit an einzelne Klassen.
 Funktionsaufrufe werden nacheinander ausgeführt und die benötigten Rückgabewerte als Parameter in die nächste Funktion übergeben.
@@ -132,11 +134,11 @@ Dadurch entsteht eine indirekte Abhängigkeit, wodurch alles übersichtlich blei
 Ebenfalls zur Code-Strukturierung trägt das Prinzip des Polymorphismus bei.
 Dadurch kann das Verhalten abhängig vom konkreten Typ jeweils geändert werden; Funktionen erhalten somit eine neue Implementierung.\\
 
-Dies ist bei unserem Programm in der Klasse \texttt{ConfigValidator} deutlich zu erkennen.
+\noindent Dies ist bei unserem Programm in der Klasse \texttt{ConfigValidator} deutlich zu erkennen.
 Sie validiert die eingegebene Funktion, wobei mehrere Validierungsaspekte separat in Betracht gezogen werden.
-Validierungsaspekte sind Implementierungen des Interfaces \texttt{IValidationAspect}, welches eine Funktion \texttt{Validate(Config)} besitzt.
+Validierungsaspekte sind Implementierungen des Interfaces \texttt{IValidationAspect}, welches eine Funktion \texttt{Validate(Config)} besitzt.\\
 
-Diese Aspekte können nun einzeln über die Funktion \texttt{Register(IValidationAspect)} zu einer Liste hinzugefügt werden. 
+\noindent Diese Aspekte können nun einzeln über die Funktion \texttt{Register(IValidationAspect)} zu einer Liste hinzugefügt werden. 
 Über \texttt{ValidateInputs(Config)} wird die eingegebene Konfiguration anhand dieser Aspekte überprüft.
 Dafür wird mit jedem Aspekt in der Liste die jeweilige Funktion \texttt{Validate(Config)} aufgerufen.
 Da die Implementierungen dieser Funktion sich von Typ zu Typ unterscheiden, liegt hier, durch den polymorphen Funktionsaufruf, eine indirekte Konditionalstruktur, also Polymorphismus vor.
@@ -158,7 +160,7 @@ Die Funktion \texttt{Validate(Config)} ist auf jeden Aspekt angepasst und bestä
 Beide Funktionen sind in der Abbildung \ref{lst:ConfigValidator} dargestellt.
 
 \begin{listing}[htb]
-	\inputminted[linenos=true,frame=lines]{csharp}{Listings/ConfigValidator.cs}
+	\inputminted[linenos=true,frame=lines, breaklines, breakbytokenanywhere]{csharp}{Listings/ConfigValidator.cs}
 	\caption{ConfigValidator als Technologiewissen und IsCorrectCity als Problemdomäne}
 	\label{lst:ConfigValidator}
 \end{listing}

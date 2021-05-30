@@ -1,35 +1,39 @@
-Softwareprodukte entwickeln sich immer weiter, was heute noch State of the art ist, kann in ein paar Jahren schon wieder durch eine neue Technologie ersetzt worden sein. Deshalb ist es wichtig seine Anwendung so gut wie möglich für Technologie-Änderungen von außen vorzubereiten. Um dies zu ermöglichen, muss bei den Architekturentscheidung acht gegeben werden. Dabei sollte man sich nicht an äußere Abhängigkeiten binden, sondern diese austauschbar machen. Dabei teilt sich der Quellcode einer Anwendung in mindestens zwei Schichten ein. Der langfristig bestehende Quellcode der Anwendung, sowie der kurzlebige Quellcode der äußeren Abhängigkeiten. Zu diesen äußeren Abhängigkeiten kann beispielsweise eine API gehören. Dieser Schichtenaufbau ist vergleichbar mit einer Matrjoschka oder einer Zwiebel.
+Softwareprodukte entwickeln sich immer weiter, was heute noch State of the art ist, kann in ein paar Jahren schon wieder durch eine neue Technologie ersetzt worden sein. Deshalb ist es wichtig seine Anwendung so gut wie möglich für Technologie-Änderungen von außen vorzubereiten. Um dies zu ermöglichen, muss bei den Architekturentscheidung acht gegeben werden. Dabei sollte man sich nicht an äußere Abhängigkeiten binden, sondern diese austauschbar machen. Dabei teilt sich der Quellcode einer Anwendung in mindestens zwei Schichten ein. Der langfristig bestehende Quellcode der Anwendung, sowie der kurzlebige Quellcode der äußeren Abhängigkeiten. Zu diesen äußeren Abhängigkeiten kann beispielsweise eine API gehören. Dieser Schichtenaufbau ist vergleichbar mit einer Matrjoschka oder einer Zwiebel.\\
 
-Wie bei einer Matrjoschka/Zwiebel auch, muss die Dependency Rule erfüllt sein, damit die Schichten klar aufgeteilt sind und äußere Schichten (relativ) einfach ausgetauscht werden können. Die Dependecy Rule sagt aus, dass Abhängigkeiten immer nur von außen nach innen gehen dürfen. Wenn ein äußerer Zwiebelring ausgetauscht wird, soll dies keine Änderung bzw. Anpassung an einem weiter innen liegenden Zwiebelring bewirken.
+\noindent Wie bei einer Matrjoschka/Zwiebel auch, muss die Dependency Rule erfüllt sein, damit die Schichten klar aufgeteilt sind und äußere Schichten (relativ) einfach ausgetauscht werden können. Die Dependecy Rule sagt aus, dass Abhängigkeiten immer nur von außen nach innen gehen dürfen. Wenn ein äußerer Zwiebelring ausgetauscht wird, soll dies keine Änderung bzw. Anpassung an einem weiter innen liegenden Zwiebelring bewirken.\\
 
-Eine Applikation lässt sich in fünf Schichten einteilen, das sind (von innen nach außen):
-\begin{itemize}
-\item Der Abstraction Code
-\begin{itemize}
-\item Dieser beinhaltet Code, der sowohl für die eigene Problemdomäne, als auch andere Problemdomänen wichtig sein kann. Hierzu zählen beispielsweise mathematische Grundlagen, wie Vektoren o.Ä.
-\end{itemize}
-\item Der Domain Code
-\begin{itemize}
-\item Diese Schicht beinhaltet hauptsächlich Entitäten und sollte sich am wenigsten ändern.
-\end{itemize}
-\item Der Application Code
-\begin{itemize}
-\item Im Application Code sind die einzelnen Use Cases wieder zu finden und implementiert damit die Geschäftslogik der Anwendung. Hier werden also die einzelnen Use Cases umgesetzt.
-\end{itemize}
-\item Die Adapters
-\begin{itemize}
-\item Diese Schicht handelt, wie der Name schon sagt, als Adapter zwischen den äußeren Plugins und den inneren Schichten. Dabei kann beispielsweise eine Formatkonvertierung stattfinden. Ein Beispiel hierfür wäre eine Web-API, die in der Plugin-Schicht angeordnet ist und ein JSON-String zurückliefert. Der Adapter ist dann für die Konvertierung des JSON-Objekts zu dem Format der Anwendung (z.B. C\#-Objekt) zuständig. Ziel der Adapter ist es, die inneren und äußeren Schichten zu entkoppeln.
-\end{itemize}
-\item Die Plugins
-\begin{itemize}
-\item Diese Schicht darf keine Anwendungslogik enthalten, da die Plugins jederzeit änderbar sein müssen. Hier steht quasi nur Pure Fabrication Code. Wird beispielsweise das World-Wide-Web durch eine besondere neue Technologie ersetzt, müssen die Web-APIs ausgetauscht werden. Dies sollte sich nicht auf die anwendungsspezifische Geschäftslogik auswirken.
-\end{itemize}
-\end{itemize}
-Die Applikation wird in einer vier Schichtenarchitektur umgesetzt. Dabei wird auf die erste Schicht, den Abstraction Code, verzichtet.
+\noindent Eine Applikation lässt sich in fünf Schichten einteilen, das sind (von innen nach außen):\\
+
+\noindent
+\hangindent1cm
+\textbf{Der Abstraction Code}
+Dieser beinhaltet Code, der sowohl für die eigene Problemdomäne, als auch andere Problemdomänen wichtig sein kann. Hierzu zählen beispielsweise mathematische Grundlagen, wie Vektoren o.Ä.\\
+
+\noindent
+\hangindent1cm
+\textbf{Der Domain Code}
+Diese Schicht beinhaltet hauptsächlich Entitäten und sollte sich am wenigsten ändern.\\
+
+\noindent
+\hangindent1cm
+\textbf{Der Application Code}
+Im Application Code sind die einzelnen Use Cases wieder zu finden und implementiert damit die Geschäftslogik der Anwendung. Hier werden also die einzelnen Use Cases umgesetzt.\\
+
+\noindent
+\hangindent1cm
+\textbf{Die Adapter}
+Diese Schicht handelt, wie der Name schon sagt, als Adapter zwischen den äußeren Plugins und den inneren Schichten. Dabei kann beispielsweise eine Formatkonvertierung stattfinden. Ein Beispiel hierfür wäre eine Web-API, die in der Plugin-Schicht angeordnet ist und ein JSON-String zurückliefert. Der Adapter ist dann für die Konvertierung des JSON-Objekts zu dem Format der Anwendung (z.B. C\#-Objekt) zuständig. Ziel der Adapter ist es, die inneren und äußeren Schichten zu entkoppeln.\\
+
+\noindent
+\hangindent1cm
+\textbf{Die Plugins}
+Diese Schicht darf keine Anwendungslogik enthalten, da die Plugins jederzeit änderbar sein müssen. Hier steht quasi nur Pure Fabrication Code. Wird beispielsweise das World-Wide-Web durch eine besondere neue Technologie ersetzt, müssen die Web-APIs ausgetauscht werden. Dies sollte sich nicht auf die anwendungsspezifische Geschäftslogik auswirken.\\
+
+\noindent Die Applikation wird in einer vier Schichtenarchitektur umgesetzt. Dabei wird auf die erste Schicht, den Abstraction Code, verzichtet.
 \subsection{Vorher}\label{CleanArchitectureVorher}
 Ein UML-Diagramm mit der Situation vor dem Implementieren der Clean Architecture ist auf unserem Git-Repository \href{https://github.com/Bronzila/WeatherWallpaper/blob/master/CleanArchitecturePics/Architektur_Vorher.jpg}{\color{blue}hier} zu finden. Abhängigkeiten von innen nach außen, die die Dependecy Rule brechen, sind dick und rot hinterlegt. Auf die Abhängigkeitspfeile in die innerste Schicht wurde für die Leserlichkeit verzichtet.
 \subsection{Nachher}
-Neben der Implementierung der Clean Architecture wurden natürlich auch noch andere Änderungen beispielsweise für die Programming Principles umgesetzt. Daher haben sich manche Klassen aufgeteilt. Das aktuelle UML-Diagramm der Anwendung findet man \href{https://github.com/Bronzila/WeatherWallpaper/blob/master/CleanArchitecturePics/Architektur_Vorher.jpg}{\color{blue}hier}. Hierbei ist erkennbar, dass nun keine Abhängigkeitspfeile von einer inneren zu einer äußeren Schicht gehen und diese mithilfe der Dependency Inversion umgedreht wurden. Damit ist die Depedency Rule erfüllt. Im Folgenden wird nochmals genauer auf die einzelnen Schichten eingegangen.
+Neben der Implementierung der Clean Architecture wurden natürlich auch noch andere Än"-de"-rung"-en beispielsweise für die Programming Principles umgesetzt. Daher haben sich manche Klassen aufgeteilt. Das aktuelle UML-Diagramm der Anwendung findet man \href{https://github.com/Bronzila/WeatherWallpaper/blob/master/CleanArchitecturePics/Architektur_Vorher.jpg}{\color{blue}hier}. Hierbei ist erkennbar, dass nun keine Abhängigkeitspfeile von einer inneren zu einer äußeren Schicht gehen und diese mithilfe der Dependency Inversion umgedreht wurden. Damit ist die Depedency Rule erfüllt. Im Folgenden wird nochmals genauer auf die einzelnen Schichten eingegangen.
 \subsubsection{Domain Code}
 In dieser Schicht reihen sich die Entitäten der Anwendung ein. Dazu gehört die \texttt{Config}, in der das Zeitintervall und der Standort gespeichert ist, sowie die \texttt{Weather}- und \texttt{ImageResponse}, welche die für die Anwendung nötigen Daten der APIs wiedergeben. In der Klasse \texttt{CountryArrays} sind Länder und ihre Abkürzungen hinterlegt. Die \texttt{WeatherInterpretation} wird für die Interpretierung des Wetters verwendet und die \texttt{BadConfigException} ist ein eigener Exception-Typ, der angibt, dass die Konfiguation fehlerhaft ist. Im UML-Diagramm wird erneut auf die Abhängigkeitspfeile in die innerste Schicht verzichtet, damit es lesbarer bleibt.
 \subsubsection{Application Code}
